@@ -34,6 +34,8 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private boolean controlsVisible = false;
 	private final GradientDrawable[] buttons;
 	private final TouchInputHandler inputHandler;
+	
+	private boolean started = false;
 
 	public void setKeyCodes (int start, int a, int b, int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4) {
 		WonderSwanButton.START.keyCode = start;
@@ -176,6 +178,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		Log.d(TAG, "emulation started");
 		mThread.setRunning();
 		mThread.start();
+		started = true;
 	}
 
 	public void togglepause () {
@@ -187,10 +190,22 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 			mThread.pause();
 		}
 	}
+	
+	public void pause () {
+		mPaused = true;
+		mThread.pause();
+	}
+	
+	public void unpause() {
+		mPaused = false;
+		mThread.unpause();
+	}
 
 	public void onResume () {
-		mThread = new EmuThread(renderer);
-		start();
+		if (started) {
+			mThread = new EmuThread(renderer);
+			start();
+		}
 	}
 
 	public void stop () {

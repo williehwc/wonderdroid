@@ -39,6 +39,8 @@ public class Main extends BaseActivity {
     private File mCartMem;
 
     private boolean mControlsVisible = false;
+    
+    private boolean calledOnRestart = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -174,23 +176,39 @@ public class Main extends BaseActivity {
 
     @Override
     public void onRestart() {
+    	// Called only when switching to emulator
         super.onRestart();
         view.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        view.stop();
-        WonderSwan.storebackupdata(mCartMem.getAbsolutePath());
-    }
+        this.calledOnRestart = true;
+    }    
 
     @Override
     protected void onResume() {
+    	// Called when switching and waking to emulator
         super.onResume();
+        if (!this.calledOnRestart) {
+        	// Called only when waking to emulator
+        	view.unpause();
+        }
+        this.calledOnRestart = false;
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         parseEmuOptions(prefs);
         parseKeys(prefs);
+    }
+    
+    @Override
+    public void onPause() {
+    	// Called when sleeping with emulator open and when switching away
+        super.onPause();
+        view.pause();
+    }
+    
+    @Override
+    public void onStop() {
+    	// Called when switching away
+    	super.onStop();
+    	view.stop();
+        WonderSwan.storebackupdata(mCartMem.getAbsolutePath());
     }
 
 }
