@@ -1,5 +1,5 @@
 
-package uk.org.cardboardbox.wonderdroid;
+package com.atelieryl.wonderdroid;
 
 import java.io.File;
 import java.util.Random;
@@ -11,7 +11,7 @@ import com.google.ads.AdRequest;
 import com.google.ads.AdSize;
 import com.google.ads.AdView;
 
-import uk.org.cardboardbox.wonderdroid.utils.RomAdapter;
+import com.atelieryl.wonderdroid.utils.RomAdapter;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;

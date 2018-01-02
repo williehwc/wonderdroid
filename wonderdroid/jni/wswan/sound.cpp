@@ -19,7 +19,7 @@
 #include <string.h>
 
 extern "C" {
-#include "uk_org_cardboardbox_wonderdroid_WonderSwan.h"
+#include "com_atelieryl_wonderdroid_WonderSwan.h"
 }
 
 #include "log.h"
@@ -339,7 +339,7 @@ int16_t WSwan_SoundFlush(int16_t *buffer) {
 	for (int y = 0; y < 2; y++) // 2
 			{
 		sbuf[y].end_frame(v30mz_timestamp);
-		love = sbuf[y].read_samples((buffer + y), uk_org_cardboardbox_wonderdroid_WonderSwan_audiobufferlen, 1);
+		love = sbuf[y].read_samples((buffer + y), com_atelieryl_wonderdroid_WonderSwan_audiobufferlen, 1);
 	}
 
 	last_ts = 0;
@@ -386,7 +386,7 @@ extern "C" void wswan_soundinit(void) {
 
 void WSwan_SoundInit() {
 	for (int i = 0; i < 2; i++) {
-		sbuf[i].set_sample_rate(uk_org_cardboardbox_wonderdroid_WonderSwan_audiofreq, 60);
+		sbuf[i].set_sample_rate(com_atelieryl_wonderdroid_WonderSwan_audiofreq, 60);
 		sbuf[i].clock_rate((long) (3072000));
 		sbuf[i].bass_freq(20);
 	}
@@ -396,7 +396,7 @@ void WSwan_SoundInit() {
 
 void WSwan_Sound(int rate) {
 	for (int i = 0; i < 2; i++)
-		sbuf[i].set_sample_rate(rate ? rate : uk_org_cardboardbox_wonderdroid_WonderSwan_audiofreq, 10);
+		sbuf[i].set_sample_rate(rate ? rate : com_atelieryl_wonderdroid_WonderSwan_audiofreq, 10);
 }
 
 extern "C" void wswan_soundreset(void) {

@@ -1,5 +1,5 @@
 
-package uk.org.cardboardbox.wonderdroid;
+package com.atelieryl.wonderdroid;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -9,8 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.GregorianCalendar;
 
-import uk.org.cardboardbox.wonderdroid.utils.RomAdapter.Rom;
-import uk.org.cardboardbox.wonderdroid.views.EmuView;
+import com.atelieryl.wonderdroid.utils.RomAdapter.Rom;
+import com.atelieryl.wonderdroid.views.EmuView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;

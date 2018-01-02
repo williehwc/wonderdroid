@@ -1,5 +1,5 @@
 
-package uk.org.cardboardbox.wonderdroid;
+package com.atelieryl.wonderdroid;
 
 import android.os.Bundle;
 import android.preference.EditTextPreference;

@@ -3,47 +3,47 @@
 
     <PreferenceCategory android:title="@string/settings_cat_controls" >
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolY1"
             android:title="Y1" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolY2"
             android:title="Y2" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolY3"
             android:title="Y3" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolY4"
             android:title="Y4" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolX1"
             android:title="@string/control_x1" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolX2"
             android:title="@string/control_x2" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolX3"
             android:title="@string/control_x3" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolX4"
             android:title="@string/control_x4" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolA"
             android:title="A" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolB"
             android:title="B" />
 
-        <uk.org.cardboardbox.wonderdroid.views.HardwareButtonPreference
+        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
             android:key="hwcontrolStart"
             android:title="Start" />
     </PreferenceCategory>
@@ -93,7 +93,7 @@
             android:maxLength="16"
             android:title="@string/name" />
 
-        <uk.org.cardboardbox.wonderdroid.views.DatePreference
+        <com.atelieryl.wonderdroid.views.DatePreference
             android:key="ws_birthday"
             android:title="@string/birthday" />
 

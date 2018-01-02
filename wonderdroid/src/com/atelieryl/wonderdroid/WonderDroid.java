@@ -1,10 +1,10 @@
 
-package uk.org.cardboardbox.wonderdroid;
+package com.atelieryl.wonderdroid;
 
 import org.acra.ACRA;
 import org.acra.annotation.ReportsCrashes;
 
-import uk.org.cardboardbox.wonderdroid.utils.ZipCache;
+import com.atelieryl.wonderdroid.utils.ZipCache;
 
 import android.app.Application;
 import android.os.Environment;

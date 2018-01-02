@@ -1,10 +1,10 @@
 
-package uk.org.cardboardbox.wonderdroid.views;
+package com.atelieryl.wonderdroid.views;
 
 import java.text.DateFormat;
 import java.util.GregorianCalendar;
 
-import uk.org.cardboardbox.wonderdroid.R;
+import com.atelieryl.wonderdroid.R;
 import android.app.DatePickerDialog;
 import android.app.DatePickerDialog.OnDateSetListener;
 import android.content.Context;

@@ -1,5 +1,5 @@
 
-package uk.org.cardboardbox.wonderdroid;
+package com.atelieryl.wonderdroid;
 
 import java.io.File;
 import java.io.FileInputStream;

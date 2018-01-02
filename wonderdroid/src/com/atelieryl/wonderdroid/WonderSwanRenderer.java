@@ -1,5 +1,5 @@
 
-package uk.org.cardboardbox.wonderdroid;
+package com.atelieryl.wonderdroid;
 
 import java.nio.ByteBuffer;
 import java.nio.ShortBuffer;
@@ -12,7 +12,7 @@ import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.AudioTrack;
 
-import uk.org.cardboardbox.wonderdroid.utils.EmuThread;
+import com.atelieryl.wonderdroid.utils.EmuThread;
 
 @SuppressLint("NewApi")
 public class WonderSwanRenderer implements EmuThread.Renderer {

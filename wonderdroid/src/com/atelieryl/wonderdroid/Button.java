@@ -1,5 +1,5 @@
 
-package uk.org.cardboardbox.wonderdroid;
+package com.atelieryl.wonderdroid;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;

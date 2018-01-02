@@ -1,5 +1,5 @@
 
-package uk.org.cardboardbox.wonderdroid.utils;
+package com.atelieryl.wonderdroid.utils;
 
 import java.io.File;
 import java.io.FileFilter;

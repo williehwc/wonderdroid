@@ -1,14 +1,14 @@
 
-package uk.org.cardboardbox.wonderdroid.views;
+package com.atelieryl.wonderdroid.views;
 
-import uk.org.cardboardbox.wonderdroid.Button;
-import uk.org.cardboardbox.wonderdroid.R;
-import uk.org.cardboardbox.wonderdroid.TouchInputHandler;
-import uk.org.cardboardbox.wonderdroid.TouchInputHandler.Pointer;
-import uk.org.cardboardbox.wonderdroid.WonderSwan;
-import uk.org.cardboardbox.wonderdroid.WonderSwan.WonderSwanButton;
-import uk.org.cardboardbox.wonderdroid.WonderSwanRenderer;
-import uk.org.cardboardbox.wonderdroid.utils.EmuThread;
+import com.atelieryl.wonderdroid.Button;
+import com.atelieryl.wonderdroid.R;
+import com.atelieryl.wonderdroid.TouchInputHandler;
+import com.atelieryl.wonderdroid.TouchInputHandler.Pointer;
+import com.atelieryl.wonderdroid.WonderSwan;
+import com.atelieryl.wonderdroid.WonderSwan.WonderSwanButton;
+import com.atelieryl.wonderdroid.WonderSwanRenderer;
+import com.atelieryl.wonderdroid.utils.EmuThread;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Paint;

@@ -1,9 +1,9 @@
 
-package uk.org.cardboardbox.wonderdroid;
+package com.atelieryl.wonderdroid;
 
 import java.nio.ShortBuffer;
 
-import uk.org.cardboardbox.wonderdroid.utils.CpuUtils;
+import com.atelieryl.wonderdroid.utils.CpuUtils;
 
 import android.media.AudioFormat;
 import android.media.AudioTrack;

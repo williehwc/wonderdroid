@@ -1,4 +1,4 @@
-#include "uk_org_cardboardbox_wonderdroid_WonderSwan.h"
+#include "com_atelieryl_wonderdroid_WonderSwan.h"
 
 #include <stdio.h>
 #include <fcntl.h>
@@ -26,7 +26,7 @@ uint16_t WSButtonStatus;
 uint32_t sram_size;
 uint32_t eeprom_size;
 
-JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_reset(JNIEnv * env, jclass obj) {
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_reset(JNIEnv * env, jclass obj) {
 	LOGD("v30mz_reset()");
 	v30mz_reset();
 	LOGD("WSwan_MemoryReset()");
@@ -52,7 +52,7 @@ JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_reset(JNI
 	v30mz_set_reg(NEC_SP, 0x2000);
 }
 
-JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_load(JNIEnv * env, jclass obj, jstring filename,
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_load(JNIEnv * env, jclass obj, jstring filename,
 		jboolean iswsc, jstring name, jint year, jint month, jint day, jint blood, jint sex) {
 
 	if (iswsc) {
@@ -168,7 +168,7 @@ JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_load(JNIE
 //reset();
 }
 
-JNIEXPORT jint JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan__1execute_1frame(JNIEnv *env, jclass obj,
+JNIEXPORT jint JNICALL Java_com_atelieryl_wonderdroid_WonderSwan__1execute_1frame(JNIEnv *env, jclass obj,
 		jboolean skip, jboolean audio, jobject framebuffer, jshortArray audiobuffer) {
 
 	// execute the active frame cycles
@@ -193,7 +193,7 @@ JNIEXPORT jint JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan__1execute
 	return samples;
 }
 
-JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_updatebuttons(JNIEnv *env, jclass obj,
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_updatebuttons(JNIEnv *env, jclass obj,
 		jboolean y1, jboolean y2, jboolean y3, jboolean y4, jboolean x1, jboolean x2, jboolean x3, jboolean x4,
 		jboolean a, jboolean b, jboolean start) {
 
@@ -225,11 +225,11 @@ JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_updatebut
 	WSButtonStatus = newbuttons;
 }
 
-JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_execute_1vblank(JNIEnv *env, jclass obj) {
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_execute_1vblank(JNIEnv *env, jclass obj) {
 	//while(wsExecuteLine(NULL, FALSE) != 0){}
 }
 
-JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_loadbackupdata(JNIEnv *env, jclass obj,
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadbackupdata(JNIEnv *env, jclass obj,
 		jstring filename) {
 
 	LOGD("loading backup data");
@@ -260,7 +260,7 @@ JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_loadbacku
 
 }
 
-JNIEXPORT void JNICALL Java_uk_org_cardboardbox_wonderdroid_WonderSwan_storebackupdata(JNIEnv *env, jclass obj,
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storebackupdata(JNIEnv *env, jclass obj,
 		jstring filename) {
 	LOGD("storing backup data");
 

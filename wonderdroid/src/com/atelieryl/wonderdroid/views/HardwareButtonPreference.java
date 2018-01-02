@@ -1,7 +1,7 @@
 
-package uk.org.cardboardbox.wonderdroid.views;
+package com.atelieryl.wonderdroid.views;
 
-import uk.org.cardboardbox.wonderdroid.R;
+import com.atelieryl.wonderdroid.R;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.SharedPreferences;

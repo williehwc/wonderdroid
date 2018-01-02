@@ -1,7 +1,7 @@
 
-package uk.org.cardboardbox.wonderdroid.utils;
+package com.atelieryl.wonderdroid.utils;
 
-import uk.org.cardboardbox.wonderdroid.Button;
+import com.atelieryl.wonderdroid.Button;
 import android.graphics.Canvas;
 import android.os.SystemClock;
 

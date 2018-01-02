@@ -1,5 +1,5 @@
 
-package uk.org.cardboardbox.wonderdroid.utils;
+package com.atelieryl.wonderdroid.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,8 +11,8 @@ import java.util.HashMap;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 
-import uk.org.cardboardbox.wonderdroid.WonderSwanHeader;
-import uk.org.cardboardbox.wonderdroid.views.RomGalleryView;
+import com.atelieryl.wonderdroid.WonderSwanHeader;
+import com.atelieryl.wonderdroid.views.RomGalleryView;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.AssetManager;
