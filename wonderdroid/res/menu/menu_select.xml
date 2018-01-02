@@ -13,12 +13,12 @@
             android:icon="@drawable/ic_menu_import"
             android:showAsAction="always|withText"
             android:title="@string/importgame"/>
-        -->
         <item
             android:id="@+id/select_exitmi"
             android:icon="@drawable/ic_menu_exit"
             android:showAsAction="always|withText"
             android:title="@string/exit"/>
+        -->
     </group>
 
 </menu>

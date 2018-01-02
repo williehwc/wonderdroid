@@ -11,7 +11,7 @@ import android.os.Environment;
 
 import java.io.File;
 
-@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=30ee9348", formKey = "")
+//@ReportsCrashes(formUri = "http://www.bugsense.com/api/acra?api_key=30ee9348", formKey = "")
 public class WonderDroid extends Application {
 
     public static final String DIRECTORY = "/wonderdroid/";

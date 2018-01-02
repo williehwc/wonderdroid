@@ -155,9 +155,9 @@ public class Select extends BaseActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle item selection
         switch (item.getItemId()) {
-            case R.id.select_exitmi:
+            /*case R.id.select_exitmi:
                 this.finish();
-                return true;
+                return true;*/
             case R.id.select_prefsmi:
                 Intent intent = new Intent(this, Prefs.class);
                 startActivity(intent);

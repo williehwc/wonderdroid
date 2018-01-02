@@ -9,6 +9,8 @@ import com.atelieryl.wonderdroid.WonderSwan;
 import com.atelieryl.wonderdroid.WonderSwan.WonderSwanButton;
 import com.atelieryl.wonderdroid.WonderSwanRenderer;
 import com.atelieryl.wonderdroid.utils.EmuThread;
+
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Matrix;
 import android.graphics.Paint;
@@ -34,6 +36,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private boolean controlsVisible = false;
 	private final GradientDrawable[] buttons;
 	private final TouchInputHandler inputHandler;
+	private Context mContext;
 	
 	private boolean started = false;
 
@@ -58,6 +61,8 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	public EmuView (Context context, AttributeSet attrs) {
 		super(context, attrs);
 
+		this.mContext = context;
+		
 		inputHandler = new TouchInputHandler(context);
 
 		buttons = new GradientDrawable[WonderSwanButton.values().length];
@@ -300,7 +305,8 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		// Log.d(TAG, "key down");
 
 		if (keyCode == KeyEvent.KEYCODE_BACK) {
-			// disable back key
+			// show menu
+			((Activity) mContext).openOptionsMenu();
 			return true;
 		}
 
