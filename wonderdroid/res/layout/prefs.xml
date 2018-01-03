@@ -84,6 +84,12 @@
             android:key="emu_rompath"
             android:maxLength="256"
             android:title="@string/overriderompath" />
+        
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="showcontrols"
+            android:summary="When starting a game"
+            android:title="Show controls automatically" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_cat_ws" >
@@ -110,13 +116,13 @@
             android:title="@string/bloodtype" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Support Settings" >
+    <!--<PreferenceCategory android:title="Support Settings" >
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:key="adsupported"
             android:summary="This allows adverts to be displayed on the game selection screen. In the future this will unlock extra features like save states."
             android:title="Allow adverts" />
-    </PreferenceCategory>
+    </PreferenceCategory>-->
 
 </PreferenceScreen>

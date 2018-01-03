@@ -41,6 +41,8 @@ public class Main extends BaseActivity {
     private boolean mControlsVisible = false;
     
     private boolean calledOnRestart = false;
+    
+    private boolean showControls = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +110,11 @@ public class Main extends BaseActivity {
                     WonderSwan.loadbackupdata(mCartMem.getAbsolutePath());
                 }
                 view.start();
+                // Show controls automatically
+                if (showControls) {
+                	mControlsVisible = true;
+                    view.showButtons(mControlsVisible);
+                }
             }
         };
 
@@ -161,6 +168,7 @@ public class Main extends BaseActivity {
 
     private void parseEmuOptions(SharedPreferences prefs) {
         WonderSwan.audioEnabled = prefs.getBoolean("emusound", true);
+        showControls = prefs.getBoolean("showcontrols", true);
     }
 
     private void parseKeys(SharedPreferences prefs) {

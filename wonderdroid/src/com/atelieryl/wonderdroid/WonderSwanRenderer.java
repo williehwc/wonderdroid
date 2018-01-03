@@ -7,6 +7,7 @@ import java.nio.ShortBuffer;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.AudioManager;
@@ -51,6 +52,9 @@ public class WonderSwanRenderer implements EmuThread.Renderer {
     @Override
     public void render(Canvas c) {
 
+    	// Make sure out-of-bounds areas remain black
+    	c.drawColor(Color.BLACK);
+    	
         // c.drawARGB(0xff, 0, 0, 0);
         c.drawBitmap(framebuffer, scale, paint);
         // c.drawBitmap(framebuffer, 0, 0, null);

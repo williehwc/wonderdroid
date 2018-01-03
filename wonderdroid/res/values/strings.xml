@@ -3,10 +3,10 @@
 
     <string name="app_name">WonderDroid</string>
     <string name="crash_string">WonderDroid crashed!</string>
-    <string name="noroms">No roms found - Please exit, add roms to wonderdroid/ on your SD card, and try again.</string>
+    <string name="noroms">No ROMs found — Please exit, add ROMs to wonderdroid/ on your SD card, and try again.</string>
     <string name="nosdcard">SD Card isn\'t present or isn\'t ready.</string>
-    <string name="colour">Colour Only - </string>
-    <string name="mono">Mono compatible - </string>
+    <string name="colour">Color —\u00A0</string>
+    <string name="mono">Monochrome —\u00A0</string>
     <string name="vertical">Vertical</string>
     <string name="horizontal">Horizontal</string>
     <string name="selectgame">Select Game</string>
