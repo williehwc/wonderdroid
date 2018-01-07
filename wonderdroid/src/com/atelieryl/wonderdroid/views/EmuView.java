@@ -163,14 +163,15 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		renderer.setButtons(buts);
 
 		scale.reset();
-		scale.postScale(postscale, postscale);
-		scale.postTranslate((width - (WonderSwan.SCREEN_WIDTH * postscale)) / 2, 0);
+		scale.postScale(2, 2);
+		//scale.postTranslate((width - (WonderSwan.SCREEN_WIDTH * postscale)) / 2, 0);
 
 	}
 
 	@Override
 	public void surfaceCreated (SurfaceHolder holder) {
 		holder.setFormat(PixelFormat.RGB_565);
+		holder.setFixedSize(WonderSwan.SCREEN_WIDTH * 2, WonderSwan.SCREEN_HEIGHT * 2);
 		mThread.setSurfaceHolder(holder);
 	}
 

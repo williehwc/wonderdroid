@@ -83,7 +83,7 @@ public class EmuThread extends Thread {
 
 				renderer.update(frame % 2 != 0);
 
-				if (frame % 3 == 0) {
+				if (frame % 3 != 0) {
 					renderer.render(mSurfaceHolder);
 					Log.i(TAG, Integer.toString(frametime));
 				}
