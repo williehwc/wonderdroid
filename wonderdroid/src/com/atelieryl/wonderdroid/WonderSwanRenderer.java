@@ -12,8 +12,11 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.AudioManager;
 import android.media.AudioTrack;
+import android.view.SurfaceHolder;
 
 import com.atelieryl.wonderdroid.utils.EmuThread;
+import com.atelieryl.wonderdroid.utils.DrawRunnable;
+import com.atelieryl.wonderdroid.utils.AudioRunnable;
 
 @SuppressLint("NewApi")
 public class WonderSwanRenderer implements EmuThread.Renderer {
@@ -36,6 +39,12 @@ public class WonderSwanRenderer implements EmuThread.Renderer {
     private final Paint paint = new Paint();
 
     private final Paint textPaint = new Paint();
+    
+    private DrawRunnable drawRunnable;
+    
+    private AudioRunnable audioRunnable;
+    
+    private boolean surfaceHolderLoaded = false;
 
     public WonderSwanRenderer() {
 
@@ -47,23 +56,28 @@ public class WonderSwanRenderer implements EmuThread.Renderer {
         frameone = ByteBuffer.allocateDirect(WonderSwan.FRAMEBUFFERSIZE).asShortBuffer();
         framebuffer = Bitmap.createBitmap(WonderSwan.SCREEN_WIDTH, WonderSwan.SCREEN_HEIGHT,
                 Bitmap.Config.RGB_565);
+        
+        drawRunnable = new DrawRunnable(framebuffer, scale, paint);
+        audioRunnable = new AudioRunnable(audio);
     }
 
     @Override
-    public void render(Canvas c) {
-
-    	// Make sure out-of-bounds areas remain black
-    	c.drawColor(Color.BLACK);
+    public void render(SurfaceHolder surfaceHolder) {
     	
         // c.drawARGB(0xff, 0, 0, 0);
-        c.drawBitmap(framebuffer, scale, paint);
+    	if (!surfaceHolderLoaded) {
+    		drawRunnable.loadSurfaceHolder(surfaceHolder);
+    		surfaceHolderLoaded = true;
+    	}
+    	drawRunnable.run();
+        // c.drawBitmap(framebuffer, scale, paint);
         // c.drawBitmap(framebuffer, 0, 0, null);
 
-        if (showButtons && buttons != null) {
+        /*if (showButtons && buttons != null) {
             for (Button button : buttons) {
                 c.drawBitmap(button.normal, button.drawrect, button.rect, null);
             }
-        }
+        }*/
 
     }
 
@@ -74,6 +88,10 @@ public class WonderSwanRenderer implements EmuThread.Renderer {
     public Paint getPaint() {
         return paint;
     }
+    
+    public Bitmap getFrameBuffer() {
+    	return framebuffer;
+    }
 
     @Override
     public void start() {
@@ -83,11 +101,11 @@ public class WonderSwanRenderer implements EmuThread.Renderer {
     @Override
     public void update(boolean skip) {
         WonderSwan.execute_frame(frameone, skip);
-        audio.write(WonderSwan.audiobuffer, 0, WonderSwan.samples * 2);
 
         if (!skip) {
             frameone.rewind();
             framebuffer.copyPixelsFromBuffer(frameone);
+            audioRunnable.run();
         }
     }
 

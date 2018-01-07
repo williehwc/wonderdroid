@@ -22,10 +22,14 @@ public class WonderSwan {
     static public boolean audioEnabled = true;
 
     static public int samples;
+    
+    static public int prevSamples;
 
     static final int audiobufferlen = 2000;
 
     static public short[] audiobuffer = new short[audiobufferlen];
+    
+    static public short[] workingaudiobuffer = new short[audiobufferlen];
 
     public static enum WonderSwanButton {
         Y1, Y4, Y2, Y3, X3, X4, X2, X1, A, B, START; // FIXME the is screen
@@ -70,9 +74,19 @@ public class WonderSwan {
                     WonderSwanButton.A.down, WonderSwanButton.B.down, WonderSwanButton.START.down);
             buttonsDirty = false;
         }
-
-        samples = _execute_frame(skipframe, audioEnabled, framebuffer, audioEnabled ? audiobuffer
+        
+        for (int i = 0; i < samples * 2; i++) {
+        	audiobuffer[i] = audiobuffer[prevSamples * 2 + i];
+        }
+        
+        prevSamples = samples;
+        samples = _execute_frame(skipframe, audioEnabled, framebuffer, audioEnabled ? workingaudiobuffer
                 : null);
+        
+        for (int i = 0; i < samples * 2; i++) {
+        	audiobuffer[prevSamples * 2 + i] = workingaudiobuffer[i];
+        }
+        
         synchronized (audiobuffer) {
             audiobuffer.notify();
         }

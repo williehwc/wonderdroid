@@ -1,0 +1,46 @@
+
+package com.atelieryl.wonderdroid.utils;
+
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.util.Log;
+import android.view.SurfaceHolder;
+
+public class DrawRunnable implements Runnable {
+	
+	private Canvas c;
+	private Bitmap framebuffer;
+	private Matrix scale;
+	private Paint paint;
+	private SurfaceHolder mSurfaceHolder;
+	
+	public DrawRunnable(Bitmap framebuffer, Matrix scale, Paint paint) {
+		this.framebuffer = framebuffer;
+		this.scale = scale;
+		this.paint = paint;
+	}
+	
+	public void loadSurfaceHolder(SurfaceHolder surfaceHolder) {
+		this.mSurfaceHolder = surfaceHolder;
+	}
+	
+	@Override
+    public void run() {
+		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE);
+		c = null;
+		try {
+			c = mSurfaceHolder.lockCanvas();
+			boolean x = c.isHardwareAccelerated();
+			c.drawColor(Color.BLACK); // Make sure out-of-bounds areas remain black
+			c.drawBitmap(framebuffer, scale, paint);
+		} finally {
+			if (c != null) {
+				mSurfaceHolder.unlockCanvasAndPost(c);
+			}
+		}
+	}
+	
+}
