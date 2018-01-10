@@ -30,6 +30,14 @@
     <string name="settings_cat_ws">WonderSwan settings</string>
     <string name="name">Name</string>
     <string name="overriderompath">Override ROM path</string>
+    <string name="emulatorsettings">Emulator settings</string>
+    <string name="enablesound">Enable sound</string>
+    <string name="showcontrols">Show controls automatically</string>
+    <string name="showcontrolsdescription">When starting a game</string>
+    <string name="frameskip">Frame skip</string>
+    <string name="frameskipdescription">Skip one out of every how many frames?</string>
+    <string name="sharpness">Screen sharpness</string>
+    <string name="sharpnessdescription">May cause display lag; requires emulator restart</string>
 
     <string-array name="sexes">
         <item>Male</item>

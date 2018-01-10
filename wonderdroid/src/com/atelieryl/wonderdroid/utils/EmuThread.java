@@ -3,8 +3,9 @@ package com.atelieryl.wonderdroid.utils;
 
 import com.atelieryl.wonderdroid.Button;
 import android.graphics.Canvas;
+import android.graphics.PixelFormat;
 import android.os.SystemClock;
-
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 public class EmuThread extends Thread {
@@ -21,12 +22,12 @@ public class EmuThread extends Thread {
 
 		public void update (boolean skip);
 
-		public void render (Canvas c);
+		public void render (SurfaceHolder surfaceHolder);
 	}
 
 	private Renderer renderer;
 
-	private static final int TARGETFRAMETIME = (int)Math.round(1000 / 75.47);
+	private static final long TARGETFRAMETIME = 6;
 
 	private boolean mIsRunning = false;
 	private boolean isPaused = false;
@@ -38,12 +39,13 @@ public class EmuThread extends Thread {
 	private int frame;
 	private long frameStart;
 	private long frameEnd;
-	private int realRuntime;
-	private int emulatedRuntime;
+	private long nextUpdateTime;
 	private int frametime;
 
 	boolean skip = false;
 	boolean behind = false;
+	
+	private int frameskip = 2;
 
 	public EmuThread (Renderer renderer) {
 		this.renderer = renderer;
@@ -51,6 +53,7 @@ public class EmuThread extends Thread {
 
 	public void setSurfaceHolder (SurfaceHolder sh) {
 		mSurfaceHolder = sh;
+		mSurfaceHolder.setFormat(PixelFormat.RGB_565);
 	}
 
 	public void pause () {
@@ -74,38 +77,20 @@ public class EmuThread extends Thread {
 		while (mIsRunning) {
 
 			if (isPaused) {
+				Log.d(TAG, "Paused!!!");
 				SystemClock.sleep(TARGETFRAMETIME);
 			} else {
 
-				skip = behind || frame % 3 == 0;
-
 				frameStart = System.currentTimeMillis();
-				renderer.update(skip);
 
-				if (!skip) {
-					c = null;
-					try {
-						c = mSurfaceHolder.lockCanvas();
-						synchronized (mSurfaceHolder) {
-							renderer.render(c);
-						}
-					} finally {
-						if (c != null) {
-							mSurfaceHolder.unlockCanvasAndPost(c);
-						}
-					}
+				renderer.update(frame % 2 != 0);
+
+				if (frame % frameskip != 0) {
+					renderer.render(mSurfaceHolder);
 				}
 
 				frameEnd = System.currentTimeMillis();
 				frametime = (int)(frameEnd - frameStart);
-				realRuntime += frametime;
-				emulatedRuntime += TARGETFRAMETIME;
-
-				if (realRuntime <= emulatedRuntime) {
-					behind = false;
-				} else {
-					// behind = true;
-				}
 
 				frame++;
 			}
@@ -129,6 +114,10 @@ public class EmuThread extends Thread {
 
 	public void clearRunning () {
 		mIsRunning = false;
+	}
+	
+	public void setFrameskip(int frameskip) {
+		this.frameskip = frameskip;
 	}
 
 }
