@@ -44,7 +44,7 @@ public class WonderSwanRenderer implements EmuThread.Renderer {
     
     private AudioRunnable audioRunnable;
     
-    private boolean surfaceHolderLoaded = false;
+    private boolean surfaceHolderIsSet = false;
 
     public WonderSwanRenderer() {
 
@@ -65,9 +65,9 @@ public class WonderSwanRenderer implements EmuThread.Renderer {
     public void render(SurfaceHolder surfaceHolder) {
     	
         // c.drawARGB(0xff, 0, 0, 0);
-    	if (!surfaceHolderLoaded) {
-    		drawRunnable.loadSurfaceHolder(surfaceHolder);
-    		surfaceHolderLoaded = true;
+    	if (!surfaceHolderIsSet) {
+    		drawRunnable.setSurfaceHolder(surfaceHolder);
+    		surfaceHolderIsSet = true;
     	}
     	drawRunnable.run();
         // c.drawBitmap(framebuffer, scale, paint);
@@ -112,10 +112,12 @@ public class WonderSwanRenderer implements EmuThread.Renderer {
     @Override
     public void setButtons(Button[] buttons) {
         this.buttons = buttons;
+        drawRunnable.setButtons(buttons);
     }
 
     @Override
     public void showButtons(boolean show) {
         this.showButtons = show;
+        drawRunnable.setShowButtons(show);
     }
 }

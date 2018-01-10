@@ -75,16 +75,20 @@ public class WonderSwan {
             buttonsDirty = false;
         }
         
-        for (int i = 0; i < samples * 2; i++) {
-        	audiobuffer[i] = audiobuffer[prevSamples * 2 + i];
+        if (audioEnabled) {
+	        for (int i = 0; i < samples * 2; i++) {
+	        	audiobuffer[i] = audiobuffer[prevSamples * 2 + i];
+	        }
         }
         
         prevSamples = samples;
         samples = _execute_frame(skipframe, audioEnabled, framebuffer, audioEnabled ? workingaudiobuffer
                 : null);
         
-        for (int i = 0; i < samples * 2; i++) {
-        	audiobuffer[prevSamples * 2 + i] = workingaudiobuffer[i];
+        if (audioEnabled) {
+	        for (int i = 0; i < samples * 2; i++) {
+	        	audiobuffer[prevSamples * 2 + i] = workingaudiobuffer[i];
+	        }
         }
         
         synchronized (audiobuffer) {

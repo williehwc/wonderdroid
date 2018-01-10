@@ -12,11 +12,13 @@ import com.atelieryl.wonderdroid.utils.EmuThread;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
+import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
-
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -38,7 +40,11 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private final TouchInputHandler inputHandler;
 	private Context mContext;
 	
+	private float actualWidthToDrawnWidthRatio;
+	private float actualHeightToDrawnHeightRatio;
+	
 	private boolean started = false;
+	private int sharpness = 1;
 
 	public void setKeyCodes (int start, int a, int b, int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4) {
 		WonderSwanButton.START.keyCode = start;
@@ -78,11 +84,19 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
 		renderer = new WonderSwanRenderer();
 		mThread = new EmuThread(renderer);
-
+		
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+		sharpness = Integer.parseInt(prefs.getString("sharpness", "1"));
+		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
 	}
 
 	@Override
 	public void surfaceChanged (SurfaceHolder holder, int format, int width, int height) {
+		actualWidthToDrawnWidthRatio = (float) width / (float) (sharpness * WonderSwan.SCREEN_WIDTH);
+		actualHeightToDrawnHeightRatio = (float) height / (float) (sharpness * WonderSwan.SCREEN_HEIGHT);
+		width = WonderSwan.SCREEN_WIDTH * sharpness;
+		height = WonderSwan.SCREEN_HEIGHT * sharpness;
+		
 		int spacing = height / 50;
 		int buttonsize = (int)(height / 6.7);
 		for (int i = 0; i < buttons.length; i++) {
@@ -163,7 +177,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		renderer.setButtons(buts);
 
 		scale.reset();
-		scale.postScale(2, 2);
+		scale.postScale(sharpness, sharpness);
 		//scale.postTranslate((width - (WonderSwan.SCREEN_WIDTH * postscale)) / 2, 0);
 
 	}
@@ -171,7 +185,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	@Override
 	public void surfaceCreated (SurfaceHolder holder) {
 		holder.setFormat(PixelFormat.RGB_565);
-		holder.setFixedSize(WonderSwan.SCREEN_WIDTH * 2, WonderSwan.SCREEN_HEIGHT * 2);
+		holder.setFixedSize(WonderSwan.SCREEN_WIDTH * sharpness, WonderSwan.SCREEN_HEIGHT * sharpness);
 		mThread.setSurfaceHolder(holder);
 	}
 
@@ -212,6 +226,8 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 			mThread = new EmuThread(renderer);
 			start();
 		}
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
 	}
 
 	public void stop () {
@@ -268,7 +284,9 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
 	private boolean checkButtons (float x, float y, boolean pressed) {
 		for (int i = 0; i < buttons.length; i++) {
-			if (buttons[i].getBounds().contains((int)x, (int)y)) {
+			Rect bounds = buttons[i].getBounds();
+			bounds = new Rect((int) (bounds.left * actualWidthToDrawnWidthRatio), (int) (bounds.top * actualHeightToDrawnHeightRatio), (int) (bounds.right * actualWidthToDrawnWidthRatio), (int) (bounds.bottom * actualHeightToDrawnHeightRatio));
+			if (bounds.contains((int)x, (int)y)) {
 				changeButton(WonderSwanButton.values()[i], pressed);
 				return true;
 			}

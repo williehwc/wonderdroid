@@ -48,13 +48,12 @@
             android:title="Start" />
     </PreferenceCategory>
 
-    <PreferenceCategory android:title="Emulator Settings" >
+    <PreferenceCategory android:title="@string/emulatorsettings" >
 
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="emusound"
-            android:summary="Disable this if you find the emulator too slow."
-            android:title="Enable Sound" />
+            android:title="@string/enablesound" />
 
         <!--
        <CheckBoxPreference
@@ -88,8 +87,23 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="showcontrols"
-            android:summary="When starting a game"
-            android:title="Show controls automatically" />
+            android:title="@string/showcontrols"
+            android:summary="@string/showcontrolsdescription" />
+        
+        <ListPreference
+            android:entries="@array/frameskip"
+            android:entryValues="@array/frameskip"
+            android:key="frameskip"
+            android:title="@string/frameskip"
+            android:defaultValue="3"
+            android:summary="@string/frameskipdescription" />
+        <ListPreference
+            android:entries="@array/sharpness"
+            android:entryValues="@array/bloodtypevalues"
+            android:key="sharpness"
+            android:title="@string/sharpness"
+            android:defaultValue="2"
+            android:summary="@string/sharpnessdescription" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_cat_ws" >

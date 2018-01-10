@@ -8,6 +8,7 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.util.Log;
 import android.view.SurfaceHolder;
+import com.atelieryl.wonderdroid.Button;
 
 public class DrawRunnable implements Runnable {
 	
@@ -16,6 +17,8 @@ public class DrawRunnable implements Runnable {
 	private Matrix scale;
 	private Paint paint;
 	private SurfaceHolder mSurfaceHolder;
+	private Button[] buttons;
+	private boolean showButtons;
 	
 	public DrawRunnable(Bitmap framebuffer, Matrix scale, Paint paint) {
 		this.framebuffer = framebuffer;
@@ -23,8 +26,16 @@ public class DrawRunnable implements Runnable {
 		this.paint = paint;
 	}
 	
-	public void loadSurfaceHolder(SurfaceHolder surfaceHolder) {
+	public void setSurfaceHolder(SurfaceHolder surfaceHolder) {
 		this.mSurfaceHolder = surfaceHolder;
+	}
+	
+	public void setButtons(Button[] buttons) {
+		this.buttons = buttons;
+	}
+	
+	public void setShowButtons(boolean showButtons) {
+		this.showButtons = showButtons;
 	}
 	
 	@Override
@@ -34,8 +45,13 @@ public class DrawRunnable implements Runnable {
 		try {
 			c = mSurfaceHolder.lockCanvas();
 			boolean x = c.isHardwareAccelerated();
-			c.drawColor(Color.BLACK); // Make sure out-of-bounds areas remain black
+			//c.drawColor(Color.BLACK); // Make sure out-of-bounds areas remain black
 			c.drawBitmap(framebuffer, scale, paint);
+			if (showButtons && buttons != null) {
+	            for (Button button : buttons) {
+	                c.drawBitmap(button.normal, button.drawrect, button.rect, null);
+	            }
+			}
 		} finally {
 			if (c != null) {
 				mSurfaceHolder.unlockCanvasAndPost(c);

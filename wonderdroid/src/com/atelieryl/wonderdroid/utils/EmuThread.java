@@ -44,6 +44,8 @@ public class EmuThread extends Thread {
 
 	boolean skip = false;
 	boolean behind = false;
+	
+	private int frameskip = 2;
 
 	public EmuThread (Renderer renderer) {
 		this.renderer = renderer;
@@ -83,9 +85,8 @@ public class EmuThread extends Thread {
 
 				renderer.update(frame % 2 != 0);
 
-				if (frame % 3 != 0) {
+				if (frame % frameskip != 0) {
 					renderer.render(mSurfaceHolder);
-					Log.i(TAG, Integer.toString(frametime));
 				}
 
 				frameEnd = System.currentTimeMillis();
@@ -113,6 +114,10 @@ public class EmuThread extends Thread {
 
 	public void clearRunning () {
 		mIsRunning = false;
+	}
+	
+	public void setFrameskip(int frameskip) {
+		this.frameskip = frameskip;
 	}
 
 }
