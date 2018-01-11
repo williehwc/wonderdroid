@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.view.View;
 import android.widget.ProgressBar;
 
 public class Main extends BaseActivity {
@@ -202,6 +203,7 @@ public class Main extends BaseActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         parseEmuOptions(prefs);
         parseKeys(prefs);
+        view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
     }
     
     @Override

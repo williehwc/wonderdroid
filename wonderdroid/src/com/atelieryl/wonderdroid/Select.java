@@ -201,14 +201,14 @@ public class Select extends BaseActivity {
 
         parseSupportOptions();
 
-        if (adSupported) {
+        /*if (adSupported) {
             FrameLayout adbox = (FrameLayout)findViewById(R.id.adbox);
             ad = new AdView(this, AdSize.BANNER, "a14fbeecba23019");
             AdRequest r = new AdRequest();
             r.addTestDevice("6A3DABBD306114452F0D233CDADCF438");
             ad.loadAd(r);
             adbox.addView(ad);
-        }
+        }*/
 
         //
         File romdir = new File(sdpath + WonderDroid.DIRECTORY);
