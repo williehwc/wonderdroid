@@ -38,6 +38,7 @@
     <string name="frameskipdescription">Skip one out of every how many frames?</string>
     <string name="sharpness">Screen sharpness</string>
     <string name="sharpnessdescription">May cause display lag; requires emulator restart</string>
+    <string name="reversehorizontalorientation">Reverse horizontal orientation</string>
 
     <string-array name="sexes">
         <item>Male</item>

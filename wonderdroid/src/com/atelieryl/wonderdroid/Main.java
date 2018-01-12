@@ -14,6 +14,7 @@ import com.atelieryl.wonderdroid.views.EmuView;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
@@ -204,6 +205,11 @@ public class Main extends BaseActivity {
         parseEmuOptions(prefs);
         parseKeys(prefs);
         view.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        if (mRomHeader.isVertical || prefs.getBoolean("reversehorizontalorientation", false)) {
+        	this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
+        } else {
+        	this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+        }
     }
     
     @Override

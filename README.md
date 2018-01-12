@@ -2,7 +2,7 @@
 
 WonderDroid is an emulator of the Bandai Wonderswan and Wonderswan Color handheld game consoles for Android. This emulator was originally written by [Daniel Palmer](https://github.com/danielgpalmer) for older versions of Android and was later imported from [Google Code](https://code.google.com/p/wonderdroid). I have forked his project to bring it up to date and fix bugs.
 
-## How to use it
+## How to use
 
   1. Open WonderDroid at least once so that it can create the directories for ROMs, etc.
   1. Copy your game ROMs in either zip archives or plain .wsc or .ws files into the `wonderdroid` directory* that has been automatically created. Zips with multiple files should work but it's not been tested.

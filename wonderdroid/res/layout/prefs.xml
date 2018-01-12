@@ -104,6 +104,10 @@
             android:title="@string/sharpness"
             android:defaultValue="2"
             android:summary="@string/sharpnessdescription" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="reversehorizontalorientation"
+            android:title="@string/reversehorizontalorientation" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_cat_ws" >
