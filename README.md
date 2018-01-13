@@ -1,6 +1,6 @@
-# WonderDroid
+# WonderDroid X
 
-WonderDroid is an emulator of the Bandai Wonderswan and Wonderswan Color handheld game consoles for Android. This emulator was originally written by [Daniel Palmer](https://github.com/danielgpalmer) for older versions of Android and was later imported from [Google Code](https://code.google.com/p/wonderdroid). I have forked his project to bring it up to date and fix bugs.
+WonderDroid X is an emulator of the Bandai Wonderswan and Wonderswan Color handheld game consoles for Android. It is a fork of WonderDroid, originally written by [Daniel Palmer](https://github.com/danielgpalmer) for older versions of Android and later imported from [Google Code](https://code.google.com/p/wonderdroid). I have forked his project to bring it up to date, fix bugs, and improve performance.
 
 ## How to use
 

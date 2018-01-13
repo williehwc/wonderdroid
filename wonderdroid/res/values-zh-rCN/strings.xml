@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-    <string name="app_name">WonderDroid</string>
+    <string name="app_name">WonderDroid X</string>
     <string name="crash_string">WonderDroid崩溃了!</string>
     <string name="noroms">没有找到ROM - 请退出, 下载ROM放到SD卡下的 wonderdroid 目录下, 然后再重试.</string>
     <string name="nosdcard">SD卡不可用.</string>

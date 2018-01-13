@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">ワンダドロイド</string>
+    <string name="app_name">ワンダドロイド X</string>
     <string name="nosdcard">SDカードがないか、または使用できません</string>
     <string name="noroms">ロムのファイルを見つけられませんでした</string>
     <string name="colour">カラー - </string>

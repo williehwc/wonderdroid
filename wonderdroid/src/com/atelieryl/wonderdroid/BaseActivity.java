@@ -17,6 +17,11 @@ public class BaseActivity extends SherlockActivity {
         super.onCreate(savedInstanceState);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        try {
+        	getActionBar().setIcon(android.R.color.transparent);
+        } catch (Exception e) {
+        	
+        }
     }
 
 }

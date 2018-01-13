@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">WonderDroid</string>
+    <string name="app_name">WonderDroid X</string>
     <string name="crash_string">WonderDroid crashed!</string>
     <string name="noroms">No ROMs found — Please exit, add ROMs to wonderdroid/ on your SD card, and try again.</string>
     <string name="nosdcard">SD Card isn\'t present or isn\'t ready.</string>

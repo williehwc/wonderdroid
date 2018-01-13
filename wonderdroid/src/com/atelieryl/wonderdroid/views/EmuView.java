@@ -40,8 +40,8 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private final TouchInputHandler inputHandler;
 	private Context mContext;
 	
-	private float actualWidthToDrawnWidthRatio;
-	private float actualHeightToDrawnHeightRatio;
+	private float actualWidthToDrawnWidthRatio = 0;
+	private float actualHeightToDrawnHeightRatio = 0;
 	
 	private boolean started = false;
 	private int sharpness = 1;
@@ -92,94 +92,95 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
 	@Override
 	public void surfaceChanged (SurfaceHolder holder, int format, int width, int height) {
-		actualWidthToDrawnWidthRatio = (float) width / (float) (sharpness * WonderSwan.SCREEN_WIDTH);
-		actualHeightToDrawnHeightRatio = (float) height / (float) (sharpness * WonderSwan.SCREEN_HEIGHT);
-		width = WonderSwan.SCREEN_WIDTH * sharpness;
-		height = WonderSwan.SCREEN_HEIGHT * sharpness;
-		
-		int spacing = height / 50;
-		int buttonsize = (int)(height / 6.7);
-		for (int i = 0; i < buttons.length; i++) {
-			buttons[i].setSize(buttonsize, buttonsize);
-
-			int updownleft = buttonsize / 2 + (spacing / 2);
-			int updownright = buttonsize + (buttonsize / 2) + (spacing / 2);
-			int bottomrowtop = height - buttonsize;
-
-			switch (i) {
-			// Y
-			case 0:
-				buttons[i].setBounds(updownleft, 0, updownright, buttonsize);
-				break;
-			case 1:
-				buttons[i].setBounds(0, buttonsize + spacing, buttonsize, (buttonsize * 2) + spacing);
-				break;
-			case 2:
-				buttons[i].setBounds(buttonsize + spacing, buttonsize + spacing, (buttonsize * 2) + spacing, (buttonsize * 2)
-					+ spacing);
-				break;
-			case 3:
-				buttons[i].setBounds(updownleft, (buttonsize * 2) + (spacing * 2), updownright, (buttonsize * 3) + (spacing * 2));
-				break;
-			// X
-			case 4:
-				buttons[i].setBounds(updownleft, height - buttonsize, updownright, height);
-				break;
-			case 5:
-				buttons[i].setBounds(0, height - (buttonsize * 2) - spacing, buttonsize, height - buttonsize - spacing);
-				break;
-			case 6:
-				buttons[i].setBounds(buttonsize + spacing, height - (buttonsize * 2) - spacing, (buttonsize * 2) + spacing, height
-					- buttonsize - spacing);
-				break;
-			case 7:
-				buttons[i].setBounds(updownleft, (height - (buttonsize * 3)) - (2 * spacing), updownright,
-					(height - (buttonsize * 2)) - (2 * spacing));
-				break;
-			// A,B
-			case 8:
-				buttons[i].setBounds(width - (buttonsize * 2) - spacing, bottomrowtop, (width - buttonsize) - spacing, height);
-				break;
-			case 9:
-				buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
-				break;
-			// Start
-			case 10:
-				buttons[i].setSize(buttonsize * 2, buttonsize);
-				buttons[i].setBounds((width / 2) - buttonsize, bottomrowtop, (width / 2) + buttonsize, height);
-				break;
-			}
-		}
-
-		Button[] buts = new Button[buttons.length];
-
-		if (buttons != null) {
-			Paint textPaint = new Paint();
-			textPaint.setColor(0xFFFFFFFF);
-			textPaint.setTextSize(height / 30);
-			textPaint.setShadowLayer(3, 1, 1, 0x99000000);
-			textPaint.setAntiAlias(true);
-
+		if (actualWidthToDrawnWidthRatio == 0 || actualWidthToDrawnWidthRatio == 1) {
+			actualWidthToDrawnWidthRatio = (float) width / (float) (sharpness * WonderSwan.SCREEN_WIDTH);
+			actualHeightToDrawnHeightRatio = (float) height / (float) (sharpness * WonderSwan.SCREEN_HEIGHT);
+			width = WonderSwan.SCREEN_WIDTH * sharpness;
+			height = WonderSwan.SCREEN_HEIGHT * sharpness;
+			
+			int spacing = height / 50;
+			int buttonsize = (int)(height / 6.7);
 			for (int i = 0; i < buttons.length; i++) {
-				buts[i] = new Button(buttons[i], textPaint, WonderSwanButton.values()[i].name());
+				buttons[i].setSize(buttonsize, buttonsize);
+	
+				int updownleft = buttonsize / 2 + (spacing / 2);
+				int updownright = buttonsize + (buttonsize / 2) + (spacing / 2);
+				int bottomrowtop = height - buttonsize;
+	
+				switch (i) {
+				// Y
+				case 0:
+					buttons[i].setBounds(updownleft, 0, updownright, buttonsize);
+					break;
+				case 1:
+					buttons[i].setBounds(0, buttonsize + spacing, buttonsize, (buttonsize * 2) + spacing);
+					break;
+				case 2:
+					buttons[i].setBounds(buttonsize + spacing, buttonsize + spacing, (buttonsize * 2) + spacing, (buttonsize * 2)
+						+ spacing);
+					break;
+				case 3:
+					buttons[i].setBounds(updownleft, (buttonsize * 2) + (spacing * 2), updownright, (buttonsize * 3) + (spacing * 2));
+					break;
+				// X
+				case 4:
+					buttons[i].setBounds(updownleft, height - buttonsize, updownright, height);
+					break;
+				case 5:
+					buttons[i].setBounds(0, height - (buttonsize * 2) - spacing, buttonsize, height - buttonsize - spacing);
+					break;
+				case 6:
+					buttons[i].setBounds(buttonsize + spacing, height - (buttonsize * 2) - spacing, (buttonsize * 2) + spacing, height
+						- buttonsize - spacing);
+					break;
+				case 7:
+					buttons[i].setBounds(updownleft, (height - (buttonsize * 3)) - (2 * spacing), updownright,
+						(height - (buttonsize * 2)) - (2 * spacing));
+					break;
+				// A,B
+				case 8:
+					buttons[i].setBounds(width - (buttonsize * 2) - spacing, bottomrowtop, (width - buttonsize) - spacing, height);
+					break;
+				case 9:
+					buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
+					break;
+				// Start
+				case 10:
+					buttons[i].setSize(buttonsize * 2, buttonsize);
+					buttons[i].setBounds((width / 2) - buttonsize, bottomrowtop, (width / 2) + buttonsize, height);
+					break;
+				}
 			}
+	
+			Button[] buts = new Button[buttons.length];
+	
+			if (buttons != null) {
+				Paint textPaint = new Paint();
+				textPaint.setColor(0xFFFFFFFF);
+				textPaint.setTextSize(height / 30);
+				textPaint.setShadowLayer(3, 1, 1, 0x99000000);
+				textPaint.setAntiAlias(true);
+	
+				for (int i = 0; i < buttons.length; i++) {
+					buts[i] = new Button(buttons[i], textPaint, WonderSwanButton.values()[i].name());
+				}
+			}
+	
+			float postscale = (float)width / (float)WonderSwan.SCREEN_WIDTH;
+	
+			if (WonderSwan.SCREEN_HEIGHT * postscale > height) {
+				postscale = (float)height / (float)WonderSwan.SCREEN_HEIGHT;
+	
+			}
+	
+			Matrix scale = renderer.getMatrix();
+	
+			renderer.setButtons(buts);
+	
+			scale.reset();
+			scale.postScale(sharpness, sharpness);
+			//scale.postTranslate((width - (WonderSwan.SCREEN_WIDTH * postscale)) / 2, 0);
 		}
-
-		float postscale = (float)width / (float)WonderSwan.SCREEN_WIDTH;
-
-		if (WonderSwan.SCREEN_HEIGHT * postscale > height) {
-			postscale = (float)height / (float)WonderSwan.SCREEN_HEIGHT;
-
-		}
-
-		Matrix scale = renderer.getMatrix();
-
-		renderer.setButtons(buts);
-
-		scale.reset();
-		scale.postScale(sharpness, sharpness);
-		//scale.postTranslate((width - (WonderSwan.SCREEN_WIDTH * postscale)) / 2, 0);
-
 	}
 
 	@Override

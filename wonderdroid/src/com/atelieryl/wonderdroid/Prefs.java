@@ -12,5 +12,6 @@ public class Prefs extends PreferenceActivity {
         this.addPreferencesFromResource(R.layout.prefs);
 
         EditTextPreference override = (EditTextPreference)findPreference("emu_overriderompath");
+        getActionBar().setIcon(android.R.color.transparent);
     }
 }
