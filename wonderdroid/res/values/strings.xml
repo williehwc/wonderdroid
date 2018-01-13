@@ -39,6 +39,14 @@
     <string name="sharpness">Screen sharpness</string>
     <string name="sharpnessdescription">May cause display lag; requires emulator restart</string>
     <string name="reversehorizontalorientation">Reverse horizontal orientation</string>
+    <string name="about">About</string>
+    <string name="aboutdescription">Developed by Willie Chang\nPublished by Yearbook Labs\nWonderDroid is originally written by Daniel Palmer.\nLicensed under GLP 2.0\nThis product includes other open-source software including ActionBarSherlock, Blip_Buffer, Bryan McPhail\'s NEC V30MZ emulator, Cygne, and Mednafen.\nOriginal icon designed by Bostwickenator on DeviantArt.</string>
+    <string name="visit">Visit our website</string>
+    <string name="close">Close</string>
+    <string name="report">Report an issue</string>
+    <string name="reportdescription">If you are having performance issues, try changing the frame skip and sharpness first. If this does not help, or you are having another issue, please let us know. Thanks!</string>
+    <string name="issues">GitHub Issues</string>
+    <string name="moreapps">More YL apps</string>
 
     <string-array name="sexes">
         <item>Male</item>

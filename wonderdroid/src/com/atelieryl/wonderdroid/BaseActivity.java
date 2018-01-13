@@ -18,8 +18,12 @@ public class BaseActivity extends SherlockActivity {
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
         try {
-        	getActionBar().setIcon(android.R.color.transparent);
-        } catch (Exception e) {
+	        try {
+	        	getActionBar().setIcon(android.R.color.transparent);
+	        } catch (Exception e) {
+	        	
+	        }
+        } catch (NoSuchMethodError e) {
         	
         }
     }

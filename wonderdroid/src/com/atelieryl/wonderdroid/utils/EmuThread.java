@@ -77,7 +77,7 @@ public class EmuThread extends Thread {
 		while (mIsRunning) {
 
 			if (isPaused) {
-				Log.d(TAG, "Paused!!!");
+				//Log.d(TAG, "Paused!!!");
 				SystemClock.sleep(TARGETFRAMETIME);
 			} else {
 

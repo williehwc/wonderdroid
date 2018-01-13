@@ -12,10 +12,14 @@ import com.google.ads.AdSize;
 import com.google.ads.AdView;
 
 import com.atelieryl.wonderdroid.utils.RomAdapter;
+
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -45,7 +49,7 @@ public class Select extends BaseActivity {
 
     private final Runnable bgSwitcher = new Runnable() {
 
-        private int splashindex = 0;
+        private int splashindex = -1;
 
         private final Random mRNG = new Random();
 
@@ -54,17 +58,19 @@ public class Select extends BaseActivity {
         @Override
         public void run() {
 
+        	if (splashindex != -1) return;
+        	
             int count = mRAdapter.getCount();
-            if (count < 10) { // Dont bother if we have less than 10 games
+            if (count < 1/*0*/) { // Dont bother if we have less than 10 games
                 return;
             }
 
             // Loop this shizzle
-            handler.removeCallbacks(this);
-            handler.postDelayed(this, 4000);
+            //handler.removeCallbacks(this);
+            //handler.postDelayed(this, 4000);
             //
 
-            int newindex = mRNG.nextInt(count - 1);
+            int newindex = mRNG.nextInt(count);
 
             if (newindex == splashindex) {
                 return;
@@ -153,6 +159,8 @@ public class Select extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+    	AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(this);
         // Handle item selection
         switch (item.getItemId()) {
             /*case R.id.select_exitmi:
@@ -162,6 +170,42 @@ public class Select extends BaseActivity {
                 Intent intent = new Intent(this, Prefs.class);
                 startActivity(intent);
                 return true;
+            case R.id.select_reportmi:
+                builder.setTitle(R.string.report)
+                .setMessage(R.string.reportdescription)
+                .setPositiveButton(R.string.issues, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) { 
+                    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/williehwc/wonderdroid/issues"));
+                    	startActivity(browserIntent);
+                    }
+                 })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) { 
+                        // do nothing
+                    }
+                 })
+                .show();
+            	return true;
+            case R.id.select_moreappsmi:
+            	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/dev?id=8429993243664540065"));
+            	startActivity(browserIntent);
+            	return true;
+            case R.id.select_aboutmi:
+                builder.setTitle(R.string.about)
+                .setMessage(R.string.aboutdescription)
+                .setPositiveButton(R.string.visit, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) { 
+                    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://yearbooklabs.com/"));
+                    	startActivity(browserIntent);
+                    }
+                 })
+                .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) { 
+                        // do nothing
+                    }
+                 })
+                .show();
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
