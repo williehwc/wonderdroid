@@ -70,14 +70,17 @@ public class Select extends BaseActivity {
             //handler.postDelayed(this, 4000);
             //
 
+            int attempt = 0;
             int newindex = mRNG.nextInt(count);
-
-            if (newindex == splashindex) {
-                return;
+            Bitmap newbitmap = mRAdapter.getBitmap(newindex);
+            
+            while ((newindex == splashindex || newbitmap == null) && attempt < 10) {
+            	newindex = mRNG.nextInt(count);
+                newbitmap = mRAdapter.getBitmap(newindex);
+                attempt++;
             }
 
-            Bitmap newbitmap = mRAdapter.getBitmap(newindex);
-            if (newbitmap == null) {
+            if (newindex == splashindex || newbitmap == null) {
                 return;
             }
 
@@ -310,8 +313,13 @@ public class Select extends BaseActivity {
 
             mBG1 = (ImageView)this.findViewById(R.id.select_bg1);
             mBG2 = (ImageView)this.findViewById(R.id.select_bg2);
-            bgSwitcher.run();
-
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (prefs.getBoolean("showbackground", true)) {
+            	mBG1.setVisibility(View.VISIBLE);
+            	bgSwitcher.run();
+            } else {
+            	mBG1.setVisibility(View.INVISIBLE);
+            }
         }
 
     }

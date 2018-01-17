@@ -79,17 +79,21 @@
                 android:summary="Force the emulator to emulate an original mono Wonder Swan." />
         -->
 
-        <EditTextPreference
+        <!--<EditTextPreference
             android:key="emu_rompath"
             android:maxLength="256"
-            android:title="@string/overriderompath" />
+            android:title="@string/overriderompath" />-->
         
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="showcontrols"
             android:title="@string/showcontrols"
             android:summary="@string/showcontrolsdescription" />
-        
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="reversehorizontalorientation"
+            android:title="@string/reversehorizontalorientation" />
+
         <ListPreference
             android:entries="@array/frameskip"
             android:entryValues="@array/frameskip"
@@ -105,9 +109,11 @@
             android:defaultValue="2"
             android:summary="@string/sharpnessdescription" />
         <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="reversehorizontalorientation"
-            android:title="@string/reversehorizontalorientation" />
+            android:defaultValue="true"
+            android:key="showbackground"
+            android:title="@string/showbackground"
+            android:summary="@string/showbackgrounddescription" />
+        
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/settings_cat_ws" >
