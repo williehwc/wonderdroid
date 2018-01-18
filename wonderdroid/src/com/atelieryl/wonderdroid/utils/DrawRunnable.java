@@ -19,6 +19,7 @@ public class DrawRunnable implements Runnable {
 	private SurfaceHolder mSurfaceHolder;
 	private Button[] buttons;
 	private boolean showButtons;
+	private boolean clearBeforeDraw;
 	
 	public DrawRunnable(Bitmap framebuffer, Matrix scale, Paint paint) {
 		this.framebuffer = framebuffer;
@@ -38,6 +39,10 @@ public class DrawRunnable implements Runnable {
 		this.showButtons = showButtons;
 	}
 	
+	public void setClearBeforeDraw(boolean clearBeforeDraw) {
+		this.clearBeforeDraw = clearBeforeDraw;
+	}
+	
 	@Override
     public void run() {
 		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE);
@@ -45,7 +50,9 @@ public class DrawRunnable implements Runnable {
 		try {
 			c = mSurfaceHolder.lockCanvas();
 			boolean x = c.isHardwareAccelerated();
-			//c.drawColor(Color.BLACK); // Make sure out-of-bounds areas remain black
+			if (clearBeforeDraw) {
+				c.drawColor(Color.BLACK); // Make sure out-of-bounds areas remain black
+			}
 			c.drawBitmap(framebuffer, scale, paint);
 			if (showButtons && buttons != null) {
 	            for (Button button : buttons) {

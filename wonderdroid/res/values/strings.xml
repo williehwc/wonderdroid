@@ -40,7 +40,7 @@
     <string name="sharpnessdescription">May cause display lag; requires emulator restart</string>
     <string name="reversehorizontalorientation">Reverse horizontal orientation</string>
     <string name="stretchtofill">Stretch to fill screen</string>
-    <string name="stretchtofilldescription">May improve performance</string>
+    <string name="stretchtofilldescription">May improve performance; requires emulator restart</string>
     <string name="showbackground">Show game select background</string>
     <string name="showbackgrounddescription">Disable for smoother scrolling</string>
     <string name="about">About</string>

@@ -42,9 +42,11 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	
 	private float actualWidthToDrawnWidthRatio = 0;
 	private float actualHeightToDrawnHeightRatio = 0;
+	private float widthToHeightRatio = 0;
 	
 	private boolean started = false;
 	private int sharpness = 1;
+	private boolean stretchToFill = true;
 
 	public void setKeyCodes (int start, int a, int b, int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4) {
 		WonderSwanButton.START.keyCode = start;
@@ -88,15 +90,24 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
 		sharpness = Integer.parseInt(prefs.getString("sharpness", "1"));
 		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
+		stretchToFill = prefs.getBoolean("stretchtofill", true);
+		renderer.setClearBeforeDraw(!stretchToFill);
 	}
 
 	@Override
 	public void surfaceChanged (SurfaceHolder holder, int format, int width, int height) {
-		if (actualWidthToDrawnWidthRatio == 0 || actualWidthToDrawnWidthRatio == 1) {
-			actualWidthToDrawnWidthRatio = (float) width / (float) (sharpness * WonderSwan.SCREEN_WIDTH);
-			actualHeightToDrawnHeightRatio = (float) height / (float) (sharpness * WonderSwan.SCREEN_HEIGHT);
-			width = WonderSwan.SCREEN_WIDTH * sharpness;
-			height = WonderSwan.SCREEN_HEIGHT * sharpness;
+		if (actualHeightToDrawnHeightRatio == 0 || actualHeightToDrawnHeightRatio == 1) {
+			if (widthToHeightRatio == 0)
+				widthToHeightRatio = (float) this.getWidth() / (float) this.getHeight();
+			int newWidth = WonderSwan.SCREEN_WIDTH * sharpness;
+			int newHeight = WonderSwan.SCREEN_HEIGHT * sharpness;
+			if (!stretchToFill) {
+				while ((float) newWidth / (float) newHeight < widthToHeightRatio) newWidth++;
+			}
+			actualWidthToDrawnWidthRatio = (float) width / (float) newWidth;
+			actualHeightToDrawnHeightRatio = (float) height / (float) newHeight;
+			width = newWidth;
+			height = newHeight;
 			
 			int spacing = height / 50;
 			int buttonsize = (int)(height / 6.7);
@@ -179,14 +190,21 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	
 			scale.reset();
 			scale.postScale(sharpness, sharpness);
-			//scale.postTranslate((width - (WonderSwan.SCREEN_WIDTH * postscale)) / 2, 0);
+			scale.postTranslate((width - WonderSwan.SCREEN_WIDTH * sharpness) / 2, 0);
 		}
 	}
 
 	@Override
 	public void surfaceCreated (SurfaceHolder holder) {
 		holder.setFormat(PixelFormat.RGB_565);
-		holder.setFixedSize(WonderSwan.SCREEN_WIDTH * sharpness, WonderSwan.SCREEN_HEIGHT * sharpness);
+		if (widthToHeightRatio == 0)
+			widthToHeightRatio = (float) this.getWidth() / (float) this.getHeight();
+		int holderWidth = WonderSwan.SCREEN_WIDTH * sharpness;
+		int holderHeight = WonderSwan.SCREEN_HEIGHT * sharpness;
+		if (!stretchToFill) {
+			while ((float) holderWidth / (float) holderHeight < widthToHeightRatio) holderWidth++;
+		}
+		holder.setFixedSize(holderWidth, holderHeight);
 		mThread.setSurfaceHolder(holder);
 	}
 

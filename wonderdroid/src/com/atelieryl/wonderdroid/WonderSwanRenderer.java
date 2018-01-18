@@ -120,4 +120,8 @@ public class WonderSwanRenderer implements EmuThread.Renderer {
         this.showButtons = show;
         drawRunnable.setShowButtons(show);
     }
+    
+    public void setClearBeforeDraw(boolean clearBeforeDraw) {
+    	drawRunnable.setClearBeforeDraw(clearBeforeDraw);
+    }
 }

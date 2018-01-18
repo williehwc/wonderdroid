@@ -93,7 +93,11 @@
             android:defaultValue="false"
             android:key="reversehorizontalorientation"
             android:title="@string/reversehorizontalorientation" />
-
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="stretchtofill"
+            android:title="@string/stretchtofill"
+            android:summary="@string/stretchtofilldescription" />
         <ListPreference
             android:entries="@array/frameskip"
             android:entryValues="@array/frameskip"
