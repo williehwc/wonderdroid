@@ -19,6 +19,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -151,6 +152,7 @@ public class Select extends BaseActivity {
             }
         });
 
+        findViewById(android.R.id.content).setBackgroundColor(Color.parseColor("#303030"));
     }
 
     @Override

@@ -88,7 +88,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		mThread = new EmuThread(renderer);
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		sharpness = Integer.parseInt(prefs.getString("sharpness", "1"));
+		sharpness = Integer.parseInt(prefs.getString("sharpness", "2"));
 		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
 		stretchToFill = prefs.getBoolean("stretchtofill", true);
 		renderer.setClearBeforeDraw(!stretchToFill);
