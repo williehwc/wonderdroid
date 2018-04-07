@@ -25,6 +25,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
+import android.os.Vibrator;
 
 public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -47,6 +48,8 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private boolean started = false;
 	private int sharpness = 1;
 	private boolean stretchToFill = true;
+	
+	static Vibrator vibrator;
 
 	public void setKeyCodes (int start, int a, int b, int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4) {
 		WonderSwanButton.START.keyCode = start;
@@ -92,6 +95,8 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
 		stretchToFill = prefs.getBoolean("stretchtofill", true);
 		renderer.setClearBeforeDraw(!stretchToFill);
+		
+		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 	}
 
 	@Override
@@ -109,28 +114,28 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 			width = newWidth;
 			height = newHeight;
 			
-			int spacing = height / 50;
+			int spacing = -1 * height / 50;
 			int buttonsize = (int)(height / 6.7);
 			for (int i = 0; i < buttons.length; i++) {
 				buttons[i].setSize(buttonsize, buttonsize);
 	
-				int updownleft = buttonsize / 2 + (spacing / 2);
-				int updownright = buttonsize + (buttonsize / 2) + (spacing / 2);
+				int updownleft = buttonsize + spacing;
+				int updownright = buttonsize + buttonsize + spacing;
 				int bottomrowtop = height - buttonsize;
 	
 				switch (i) {
 				// Y
-				case 0:
+				case 0: //up
 					buttons[i].setBounds(updownleft, 0, updownright, buttonsize);
 					break;
-				case 1:
+				case 1: //left
 					buttons[i].setBounds(0, buttonsize + spacing, buttonsize, (buttonsize * 2) + spacing);
 					break;
-				case 2:
-					buttons[i].setBounds(buttonsize + spacing, buttonsize + spacing, (buttonsize * 2) + spacing, (buttonsize * 2)
+				case 2: //right
+					buttons[i].setBounds(2 * (buttonsize + spacing), buttonsize + spacing, buttonsize + 2 * (buttonsize + spacing), (buttonsize * 2)
 						+ spacing);
 					break;
-				case 3:
+				case 3: //down
 					buttons[i].setBounds(updownleft, (buttonsize * 2) + (spacing * 2), updownright, (buttonsize * 3) + (spacing * 2));
 					break;
 				// X
@@ -141,7 +146,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 					buttons[i].setBounds(0, height - (buttonsize * 2) - spacing, buttonsize, height - buttonsize - spacing);
 					break;
 				case 6:
-					buttons[i].setBounds(buttonsize + spacing, height - (buttonsize * 2) - spacing, (buttonsize * 2) + spacing, height
+					buttons[i].setBounds(2 * (buttonsize + spacing), height - (buttonsize * 2) - spacing, buttonsize + 2 * (buttonsize + spacing), height
 						- buttonsize - spacing);
 					break;
 				case 7:
@@ -150,10 +155,10 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 					break;
 				// A,B
 				case 8:
-					buttons[i].setBounds(width - (buttonsize * 2) - spacing, bottomrowtop, (width - buttonsize) - spacing, height);
+					buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
 					break;
 				case 9:
-					buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
+					buttons[i].setBounds(width - (buttonsize * 2) + spacing * 2, bottomrowtop, (width - buttonsize) + spacing * 2, height);
 					break;
 				// Start
 				case 10:
@@ -268,10 +273,20 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 	}
 
-	public static void changeButton (WonderSwanButton which, boolean newstate) {
-		which.down = newstate;
+	public static void changeButton (WonderSwanButton button, boolean newState, boolean touch) {
+		if (newState && !button.touchDown && touch) {
+			vibrator.vibrate(5);
+		}
+		if (!newState && button.touchDown && touch) {
+			vibrator.vibrate(1);
+		}
+		if (touch) {
+			button.touchDown = newState;
+		} else {
+			button.hardwareKeyDown = newState;
+		}
+		button.down = (button.touchDown || button.hardwareKeyDown);
 		WonderSwan.buttonsDirty = true;
-
 	}
 
 	public EmuThread getThread () {
@@ -290,45 +305,35 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 
 		inputHandler.onTouchEvent(event);
-		resetButtons();
 
+		boolean[] buttonStates = new boolean[buttons.length];
 		for (Pointer pointer : inputHandler.pointers) {
-			if (pointer.down) {
-				checkButtons(pointer.x, pointer.y, true);
+			for (int i = 0; i < buttons.length; i++) {
+				Rect bounds = buttons[i].getBounds();
+				bounds = new Rect((int) (bounds.left * actualWidthToDrawnWidthRatio), (int) (bounds.top * actualHeightToDrawnHeightRatio), (int) (bounds.right * actualWidthToDrawnWidthRatio), (int) (bounds.bottom * actualHeightToDrawnHeightRatio));
+				if (bounds.contains((int)pointer.x, (int)pointer.y) && pointer.down) {
+					buttonStates[i] = true;
+				} else if (!buttonStates[i] && (bounds.contains((int)pointer.x, (int)pointer.y) || pointer.down)) {
+					buttonStates[i] = false;
+				}
+			}
+		}
+		for (int i = 0; i < buttons.length; i++) {
+			if (buttonStates[i]) {
+				changeButton(WonderSwanButton.values()[i], true, true);
+			} else {
+				changeButton(WonderSwanButton.values()[i], false, true);
 			}
 		}
 		return true;
 
 	}
 
-	private boolean checkButtons (float x, float y, boolean pressed) {
-		for (int i = 0; i < buttons.length; i++) {
-			Rect bounds = buttons[i].getBounds();
-			bounds = new Rect((int) (bounds.left * actualWidthToDrawnWidthRatio), (int) (bounds.top * actualHeightToDrawnHeightRatio), (int) (bounds.right * actualWidthToDrawnWidthRatio), (int) (bounds.bottom * actualHeightToDrawnHeightRatio));
-			if (bounds.contains((int)x, (int)y)) {
-				changeButton(WonderSwanButton.values()[i], pressed);
-				return true;
-			}
-		}
-		return false;
-	}
-
-	private final WonderSwanButton[] buttonVals = WonderSwanButton.values();
-
-	private void resetButtons () {
-		for (WonderSwanButton button : buttonVals) {
-			changeButton(button, false | button.hardwareKeyDown);
-		}
-	}
-
 	private boolean decodeKey (int keycode, boolean down) {
 
 		for (WonderSwanButton button : WonderSwanButton.values()) {
 			if (button.keyCode == keycode) {
-				Log.d(TAG, "here");
-				button.hardwareKeyDown = down;
-
-				changeButton(button, down);
+				changeButton(button, down, false);
 				return true;
 			}
 		}

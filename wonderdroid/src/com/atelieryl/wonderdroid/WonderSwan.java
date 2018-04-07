@@ -35,6 +35,8 @@ public class WonderSwan {
         Y1, Y4, Y2, Y3, X3, X4, X2, X1, A, B, START; // FIXME the is screen
                                                      // rendering order
         public boolean hardwareKeyDown = false;
+        
+        public boolean touchDown = false;
 
         public boolean down = false;
 

@@ -25,7 +25,7 @@ public class Button {
 		base.setBounds(drawrect);
 		base.draw(canvas);
 		canvas.drawText(text, (drawrect.left + drawrect.width() / 2) - textLen,
-			(drawrect.top + drawrect.height() / 2) + (textPaint.getTextSize() / 2), textPaint);
+			(drawrect.top + drawrect.height() / 2) + (textPaint.getTextSize() / 3), textPaint);
 
 		base.setBounds(rect);
 	}
