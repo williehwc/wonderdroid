@@ -112,4 +112,8 @@ public class WonderSwan {
     public static native void storebackupdata(String filename);
 
     public static native void loadbackupdata(String filename);
+    
+    public static native void storeramdata(String filename);
+
+    public static native void loadramdata(String filename);
 }

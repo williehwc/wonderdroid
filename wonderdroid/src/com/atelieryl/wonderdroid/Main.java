@@ -40,6 +40,8 @@ public class Main extends BaseActivity {
 
     private File mCartMem;
 
+    private File mAutoSav;
+    
     private boolean mControlsVisible = false;
     
     private boolean calledOnRestart = false;
@@ -82,6 +84,15 @@ public class Main extends BaseActivity {
                         + "/wonderdroid/cartmem/" + mRomHeader.internalname + ".mem");
                 try {
                     mCartMem.createNewFile();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new RuntimeException();
+                }
+                
+                mAutoSav = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
+                        + "/wonderdroid/cartmem/" + mRomHeader.internalname + "_auto.sav");
+                try {
+                	mAutoSav.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
                     throw new RuntimeException();
@@ -147,9 +158,16 @@ public class Main extends BaseActivity {
             case R.id.main_togcntrlmi:
                 toggleControls();
                 return true;
-                // case R.id.quit:
+            // case R.id.quit:
                 // quit();
                 // return true;
+            case R.id.main_savestate:
+            	WonderSwan.storeramdata(mAutoSav.getAbsolutePath());
+            	return true;
+            case R.id.main_loadstate:
+            	//WonderSwan.loadbackupdata(mCartMem.getAbsolutePath());
+            	WonderSwan.loadramdata(mAutoSav.getAbsolutePath());
+            	return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -225,6 +243,7 @@ public class Main extends BaseActivity {
     	super.onStop();
     	view.stop();
         WonderSwan.storebackupdata(mCartMem.getAbsolutePath());
+        //WonderSwan.storeramdata(mAutoSav.getAbsolutePath());
     }
 
 }

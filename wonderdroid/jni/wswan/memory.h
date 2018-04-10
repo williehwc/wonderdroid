@@ -12,6 +12,24 @@ uint32_t eeprom_size;
 uint8_t wsEEPROM[2048];
 uint8_t *wsSRAM;
 
+bool ramLock;
+
+static uint8_t ButtonWhich, ButtonReadLatch;
+
+static uint32_t DMASource, DMADest;
+static uint16_t DMALength;
+static uint8_t DMAControl;
+
+static uint32_t SoundDMASource;
+static uint16_t SoundDMALength;
+static uint8_t SoundDMAControl;
+
+static uint8_t BankSelector[4];
+
+static uint8_t CommControl, CommData;
+
+extern uint16_t WSButtonStatus;
+
 #endif
 
 uint8_t WSwan_readmem20(uint32_t);

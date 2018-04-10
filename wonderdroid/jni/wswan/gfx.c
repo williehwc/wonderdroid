@@ -28,37 +28,7 @@
 #include "v30mz.h"
 #include "rtc.h"
 
-static uint32_t wsMonoPal[16][4];
-static uint32_t wsColors[8];
-static uint32_t wsCols[16][16];
-
-static uint16_t ColorMapG[16];
-static uint16_t ColorMap[16 * 16 * 16];
 static uint32_t LayerEnabled = 7; // BG, FG, sprites
-
-/*current scanline*/
-
-static uint8_t SpriteTable[0x80][4];
-static uint32_t SpriteCountCache;
-static uint8_t DispControl;
-static uint8_t BGColor;
-static uint8_t LineCompare;
-static uint8_t SPRBase;
-static uint8_t SpriteStart, SpriteCount;
-static uint8_t FGBGLoc;
-static uint8_t FGx0, FGy0, FGx1, FGy1;
-static uint8_t SPRx0, SPRy0, SPRx1, SPRy1;
-
-static uint8_t BGXScroll, BGYScroll;
-static uint8_t FGXScroll, FGYScroll;
-static uint8_t LCDControl, LCDIcons;
-
-static uint8_t BTimerControl;
-static uint16_t HBTimerPeriod;
-static uint16_t VBTimerPeriod;
-
-static uint16_t HBCounter, VBCounter;
-static uint8_t VideoMode;
 
 void WSwan_GfxInit(void) {
 }

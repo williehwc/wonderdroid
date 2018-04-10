@@ -67,6 +67,22 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storebackupdata
 JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadbackupdata
   (JNIEnv *, jclass, jstring);
 
+/*
+ * Class:     com_atelieryl_wonderdroid_WonderSwan
+ * Method:    storeramdata
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storeramdata
+  (JNIEnv *, jclass, jstring);
+
+/*
+ * Class:     com_atelieryl_wonderdroid_WonderSwan
+ * Method:    loadramdata
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata
+  (JNIEnv *, jclass, jstring);
+
 #ifdef __cplusplus
 }
 #endif
