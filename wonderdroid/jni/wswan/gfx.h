@@ -5,6 +5,7 @@
 
 void WSWan_TCacheInvalidByAddr(uint32_t);
 
+extern uint8_t tiles[256][256][2][8];
 extern uint8_t wsTCache[512 * 64]; //tiles cache
 extern uint8_t wsTCacheFlipped[512 * 64]; //tiles cache (H flip)
 extern uint8_t wsTileRow[8]; //extracted 8 pixels (tile row)
