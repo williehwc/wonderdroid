@@ -48,8 +48,10 @@ public class DrawRunnable implements Runnable {
 		android.os.Process.setThreadPriority(android.os.Process.THREAD_PRIORITY_MORE_FAVORABLE);
 		c = null;
 		try {
-			c = mSurfaceHolder.lockCanvas();
-			boolean x = c.isHardwareAccelerated();
+			while (c == null) {
+				c = mSurfaceHolder.lockCanvas();
+			}
+			//boolean x = c.isHardwareAccelerated();
 			if (clearBeforeDraw) {
 				c.drawColor(Color.BLACK); // Make sure out-of-bounds areas remain black
 			}

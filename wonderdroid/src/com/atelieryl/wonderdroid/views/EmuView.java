@@ -50,6 +50,9 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private boolean stretchToFill = true;
 	
 	static Vibrator vibrator;
+	static int vibratedown = 5;
+	static int vibrateup = 1;
+	boolean relocate = false;
 
 	public void setKeyCodes (int start, int a, int b, int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4) {
 		WonderSwanButton.START.keyCode = start;
@@ -97,6 +100,9 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		renderer.setClearBeforeDraw(!stretchToFill);
 		
 		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+		vibratedown = Integer.parseInt(prefs.getString("vibratedown", "5"));
+		vibrateup = Integer.parseInt(prefs.getString("vibrateup", "1"));
+		relocate = prefs.getBoolean("relocate", false);
 	}
 
 	@Override
@@ -163,7 +169,11 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 				// Start
 				case 10:
 					buttons[i].setSize(buttonsize * 2, buttonsize);
-					buttons[i].setBounds((width / 2) - buttonsize, bottomrowtop, (width / 2) + buttonsize, height);
+					if (relocate) {
+						buttons[i].setBounds(width - buttonsize * 2, 0, width, buttonsize);
+					} else {
+						buttons[i].setBounds((width / 2) - buttonsize, bottomrowtop, (width / 2) + buttonsize, height);
+					}
 					break;
 				}
 			}
@@ -252,6 +262,9 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
+		vibratedown = Integer.parseInt(prefs.getString("vibratedown", "5"));
+		vibrateup = Integer.parseInt(prefs.getString("vibrateup", "1"));
+		relocate = prefs.getBoolean("relocate", false);
 	}
 
 	public void stop () {
@@ -275,10 +288,10 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
 	public static void changeButton (WonderSwanButton button, boolean newState, boolean touch) {
 		if (newState && !button.touchDown && touch) {
-			vibrator.vibrate(5);
+			vibrator.vibrate(vibratedown);
 		}
 		if (!newState && button.touchDown && touch) {
-			vibrator.vibrate(1);
+			vibrator.vibrate(vibrateup);
 		}
 		if (touch) {
 			button.touchDown = newState;

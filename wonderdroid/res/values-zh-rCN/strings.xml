@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <string name="app_name">WonderDroid X</string>
-    <string name="crash_string">WonderDroid崩溃了!</string>
+    <string name="crash_string">WonderDroid X 崩溃了!</string>
     <string name="noroms">没有找到ROM - 请退出, 下载ROM放到SD卡下的 wonderdroid 目录下, 然后再重试.</string>
     <string name="nosdcard">SD卡不可用.</string>
     <string name="colour">彩色 —\u00A0</string>
@@ -13,7 +13,7 @@
     <string name="exit">退出</string>
     <string name="preferences">选项</string>
     <string name="importgame">导入游戏</string>
-    <string name="togglescreencontrols">虚拟手柄</string>
+    <string name="togglescreencontrols">虚拟控制器</string>
     <string name="pause">暂停</string>
     <string name="reset">重置</string>
     <string name="settings_cat_controls">控制按键设置</string>
@@ -27,15 +27,42 @@
     <string name="birthday">生日</string>
     <string name="sex">性别</string>
     <string name="bloodtype">血型</string>
-    <string name="settings_cat_ws">WonderSwan设置</string>
+    <string name="settings_cat_ws">WonderSwan 剖析</string>
     <string name="name">姓名</string>
     <string name="overriderompath">重新设置ROM目录</string>
-    <string name="emulatorsettings">模拟器设置</string>
+    <string name="emulatorsettings">偏好</string>
     <string name="enablesound">打开声音</string>
-    
+    <string name="showcontrols">自动打开虚拟控制器</string>
+    <string name="showcontrolsdescription">开始游戏中</string>
+    <string name="onscreencontrolsettings">虚拟控制器</string>
+    <string name="vibratedown">按钮时震动</string>
+    <string name="vibratedowndescription"></string>
+    <string name="vibrateup">按钮放开震动</string>
+    <string name="vibrateupdescription"></string>
+    <string name="relocate">Start 按钮移到右上角</string>
+    <string name="relocatedescription">需要重新开始模拟器</string>
+    <string name="graphicssettings">画面</string>
+    <string name="frameskip">跳帧</string>
+    <string name="frameskipdescription">每多少帧跳过一个?</string>
+    <string name="sharpness">锐利度</string>
+    <string name="sharpnessdescription">May cause display lag; 需要重新开始模拟器</string>
+    <string name="reversehorizontalorientation">水平时，转动180度</string>
+    <string name="stretchtofill">画面自动调整到荧幕的形状</string>
+    <string name="stretchtofilldescription">可改善性能; 需要重新开始模拟器</string>
+    <string name="showbackground">打开游戏选项背景</string>
+    <string name="showbackgrounddescription">Disable for smoother scrolling</string>
+    <string name="about">关于</string>
+    <string name="aboutdescription">Developed by Willie Chang\nPublished by Yearbook Labs\nWonderDroid is originally written by Daniel Palmer.\nLicensed under GLP 2.0\nThis product includes other open-source software including ActionBarSherlock, Blip_Buffer, Bryan McPhail\'s NEC V30MZ emulator, Cygne, and Mednafen.\nOriginal icon designed by Bostwickenator on DeviantArt.</string>
+    <string name="visit">参观我们的网站</string>
+    <string name="close">关闭</string>
+    <string name="report">反映问题</string>
+    <string name="reportdescription">如果游戏性能及速度不佳，可尝试调整跳帧或锐利度，如果无效请po问题于GitHub，谢谢。</string>
+    <string name="issues">GitHub 问题</string>
+    <string name="moreapps">下载更多 YL APP</string>
+
     <string-array name="sexes">
         <item>男</item>
         <item>女</item>
     </string-array>
-    
+
 </resources>

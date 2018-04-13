@@ -85,14 +85,46 @@
             android:title="@string/overriderompath" />-->
         
         <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="reversehorizontalorientation"
+            android:title="@string/reversehorizontalorientation" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="showbackground"
+            android:title="@string/showbackground"
+            android:summary="@string/showbackgrounddescription" />
+        
+    </PreferenceCategory>
+     
+    <PreferenceCategory android:title="@string/onscreencontrolsettings">
+        <CheckBoxPreference
             android:defaultValue="true"
             android:key="showcontrols"
             android:title="@string/showcontrols"
             android:summary="@string/showcontrolsdescription" />
+        <ListPreference
+            android:entries="@array/vibration"
+            android:entryValues="@array/vibrationvalues"
+            android:key="vibratedown"
+            android:title="@string/vibratedown"
+            android:defaultValue="5"
+            android:summary="@string/vibratedowndescription" />
+        <ListPreference
+            android:entries="@array/vibration"
+            android:entryValues="@array/vibrationvalues"
+            android:key="vibrateup"
+            android:title="@string/vibrateup"
+            android:defaultValue="1"
+            android:summary="@string/vibrateupdescription" />
         <CheckBoxPreference
             android:defaultValue="false"
-            android:key="reversehorizontalorientation"
-            android:title="@string/reversehorizontalorientation" />
+            android:key="relocate"
+            android:title="@string/relocate"
+            android:summary="@string/relocatedescription" />
+    </PreferenceCategory>
+    
+    <PreferenceCategory android:title="@string/graphicssettings" >
+         
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="stretchtofill"
@@ -112,11 +144,7 @@
             android:title="@string/sharpness"
             android:defaultValue="2"
             android:summary="@string/sharpnessdescription" />
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="showbackground"
-            android:title="@string/showbackground"
-            android:summary="@string/showbackgrounddescription" />
+        
         
     </PreferenceCategory>
 
