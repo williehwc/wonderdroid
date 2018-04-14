@@ -121,6 +121,11 @@
             android:key="relocate"
             android:title="@string/relocate"
             android:summary="@string/relocatedescription" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="swapab"
+            android:title="@string/swapab"
+            android:summary="@string/relocatedescription" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/graphicssettings" >

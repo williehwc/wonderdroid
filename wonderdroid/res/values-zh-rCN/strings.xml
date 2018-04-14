@@ -41,6 +41,7 @@
     <string name="vibrateupdescription"></string>
     <string name="relocate">Start 按钮移到右上角</string>
     <string name="relocatedescription">需要重新开始模拟器</string>
+    <string name="swapab">交换 A + B 按钮</string>
     <string name="graphicssettings">画面</string>
     <string name="frameskip">跳帧</string>
     <string name="frameskipdescription">每多少帧跳过一个?</string>
@@ -52,7 +53,7 @@
     <string name="showbackground">打开游戏选项背景</string>
     <string name="showbackgrounddescription">Disable for smoother scrolling</string>
     <string name="about">关于</string>
-    <string name="aboutdescription">Developed by Willie Chang\nPublished by Yearbook Labs\nWonderDroid is originally written by Daniel Palmer.\nLicensed under GLP 2.0\nThis product includes other open-source software including ActionBarSherlock, Blip_Buffer, Bryan McPhail\'s NEC V30MZ emulator, Cygne, and Mednafen.\nOriginal icon designed by Bostwickenator on DeviantArt.</string>
+    <string name="aboutdescription">Developed by Willie Chang\nPublished by Yearbook Labs\nWonderDroid is originally written by Daniel Palmer.\nLicensed under GPL 2.0\nThis product includes other open-source software including ActionBarSherlock, Blip_Buffer, Bryan McPhail\'s NEC V30MZ emulator, Cygne, and Mednafen.\nOriginal icon designed by Bostwickenator on DeviantArt.</string>
     <string name="visit">参观我们的网站</string>
     <string name="close">关闭</string>
     <string name="report">反映问题</string>

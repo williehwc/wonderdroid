@@ -53,6 +53,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	static int vibratedown = 5;
 	static int vibrateup = 1;
 	boolean relocate = false;
+	boolean swapAB = false;
 
 	public void setKeyCodes (int start, int a, int b, int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4) {
 		WonderSwanButton.START.keyCode = start;
@@ -103,6 +104,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		vibratedown = Integer.parseInt(prefs.getString("vibratedown", "5"));
 		vibrateup = Integer.parseInt(prefs.getString("vibrateup", "1"));
 		relocate = prefs.getBoolean("relocate", false);
+		swapAB = prefs.getBoolean("swapab", false);
 	}
 
 	@Override
@@ -161,10 +163,18 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 					break;
 				// A,B
 				case 8:
-					buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
+					if (swapAB) {
+						buttons[i].setBounds(width - (buttonsize * 2) + spacing * 2, bottomrowtop, (width - buttonsize) + spacing * 2, height);
+					} else {
+						buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
+					}
 					break;
 				case 9:
-					buttons[i].setBounds(width - (buttonsize * 2) + spacing * 2, bottomrowtop, (width - buttonsize) + spacing * 2, height);
+					if (swapAB) {
+						buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
+					} else {
+						buttons[i].setBounds(width - (buttonsize * 2) + spacing * 2, bottomrowtop, (width - buttonsize) + spacing * 2, height);
+					}
 					break;
 				// Start
 				case 10:
@@ -264,7 +274,6 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
 		vibratedown = Integer.parseInt(prefs.getString("vibratedown", "5"));
 		vibrateup = Integer.parseInt(prefs.getString("vibrateup", "1"));
-		relocate = prefs.getBoolean("relocate", false);
 	}
 
 	public void stop () {
