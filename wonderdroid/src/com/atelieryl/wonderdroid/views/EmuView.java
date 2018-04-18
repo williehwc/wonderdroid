@@ -46,8 +46,8 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private float widthToHeightRatio = 0;
 	
 	private boolean started = false;
-	private int sharpness = 1;
-	private boolean stretchToFill = true;
+	private int sharpness = 3;
+	private boolean stretchToFill = false;
 	
 	static Vibrator vibrator;
 	static int vibratedown = 5;
@@ -95,9 +95,9 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		mThread = new EmuThread(renderer);
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		sharpness = Integer.parseInt(prefs.getString("sharpness", "2"));
+		sharpness = Integer.parseInt(prefs.getString("sharpness", "3"));
 		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
-		stretchToFill = prefs.getBoolean("stretchtofill", true);
+		stretchToFill = prefs.getBoolean("stretchtofill", false);
 		renderer.setClearBeforeDraw(!stretchToFill);
 		
 		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
@@ -285,7 +285,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
 			synchronized (mThread) {
 				try {
-					mThread.wait();
+					mThread.wait(3000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					return;

@@ -78,11 +78,6 @@
                 android:defaultValue="false"
                 android:summary="Force the emulator to emulate an original mono Wonder Swan." />
         -->
-
-        <!--<EditTextPreference
-            android:key="emu_rompath"
-            android:maxLength="256"
-            android:title="@string/overriderompath" />-->
         
         <CheckBoxPreference
             android:defaultValue="false"
@@ -93,6 +88,18 @@
             android:key="showbackground"
             android:title="@string/showbackground"
             android:summary="@string/showbackgrounddescription" />
+        
+        <EditTextPreference
+            android:key="emu_rompath"
+            android:maxLength="256"
+            android:defaultValue="wonderdroid"
+            android:title="@string/overriderompath" />
+        
+        <EditTextPreference
+            android:key="emu_mempath"
+            android:maxLength="256"
+            android:defaultValue="wonderdroid/cartmem"
+            android:title="@string/overridemempath" />
         
     </PreferenceCategory>
      
@@ -131,7 +138,7 @@
     <PreferenceCategory android:title="@string/graphicssettings" >
          
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="stretchtofill"
             android:title="@string/stretchtofill"
             android:summary="@string/stretchtofilldescription" />
@@ -147,7 +154,7 @@
             android:entryValues="@array/bloodtypevalues"
             android:key="sharpness"
             android:title="@string/sharpness"
-            android:defaultValue="2"
+            android:defaultValue="3"
             android:summary="@string/sharpnessdescription" />
         
         

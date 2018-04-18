@@ -3,7 +3,7 @@
 
     <string name="app_name">WonderDroid X</string>
     <string name="crash_string">WonderDroid X 崩溃了!</string>
-    <string name="noroms">没有找到ROM - 请退出, 下载ROM放到SD卡下的 wonderdroid 目录下, 然后再重试.</string>
+    <string name="noroms">没有找到 ROM – 请退出, 下载 ROM 放到 SD 卡下的 ROM 资料夹 ???, 然后再重试。</string>
     <string name="nosdcard">SD卡不可用.</string>
     <string name="colour">彩色 —\u00A0</string>
     <string name="mono">黑白 —\u00A0</string>
@@ -29,7 +29,8 @@
     <string name="bloodtype">血型</string>
     <string name="settings_cat_ws">WonderSwan 剖析</string>
     <string name="name">姓名</string>
-    <string name="overriderompath">重新设置ROM目录</string>
+    <string name="overriderompath">ROM 路径</string>
+    <string name="overridemempath">存档路径</string>
     <string name="emulatorsettings">偏好</string>
     <string name="enablesound">打开声音</string>
     <string name="showcontrols">自动打开虚拟控制器</string>
@@ -57,7 +58,7 @@
     <string name="visit">参观我们的网站</string>
     <string name="close">关闭</string>
     <string name="report">反映问题</string>
-    <string name="reportdescription">如果游戏性能及速度不佳，可尝试调整跳帧或锐利度，如果无效请po问题于GitHub，谢谢。</string>
+    <string name="reportdescription">如果游戏性能及速度不佳，可尝试调整跳帧或锐利度，如果无效请po问题于 GitHub，谢谢。</string>
     <string name="issues">GitHub 问题</string>
     <string name="moreapps">下载更多 YL APP</string>
 
