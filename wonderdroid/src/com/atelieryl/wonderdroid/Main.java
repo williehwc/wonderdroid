@@ -47,6 +47,8 @@ public class Main extends BaseActivity {
     private boolean calledOnRestart = false;
     
     private boolean showControls = true;
+    
+    private String memPath = "wonderdroid/cartmem";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,6 +71,14 @@ public class Main extends BaseActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         parseEmuOptions(prefs);
         parseKeys(prefs);
+        
+        memPath = prefs.getString("emu_mempath", "wonderdroid/cartmem");
+        if (!memPath.startsWith("/")) {
+        	memPath = "/" + memPath;
+        }
+        if (!memPath.endsWith("/")) {
+        	memPath = memPath + "/";
+        }
 
         mPB = (ProgressBar)this.findViewById(R.id.romloadprogressbar);
 
@@ -81,7 +91,7 @@ public class Main extends BaseActivity {
             @Override
             protected Void doInBackground(Void... params) {
                 mCartMem = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/wonderdroid/cartmem/" + mRomHeader.internalname + ".mem");
+                        + memPath + mRomHeader.internalname + ".mem");
                 try {
                     mCartMem.createNewFile();
                 } catch (IOException e) {

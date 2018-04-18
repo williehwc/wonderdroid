@@ -46,10 +46,14 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private float widthToHeightRatio = 0;
 	
 	private boolean started = false;
-	private int sharpness = 1;
-	private boolean stretchToFill = true;
+	private int sharpness = 3;
+	private boolean stretchToFill = false;
 	
 	static Vibrator vibrator;
+	static int vibratedown = 5;
+	static int vibrateup = 1;
+	boolean relocate = false;
+	boolean swapAB = false;
 
 	public void setKeyCodes (int start, int a, int b, int x1, int x2, int x3, int x4, int y1, int y2, int y3, int y4) {
 		WonderSwanButton.START.keyCode = start;
@@ -91,12 +95,16 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		mThread = new EmuThread(renderer);
 		
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-		sharpness = Integer.parseInt(prefs.getString("sharpness", "2"));
+		sharpness = Integer.parseInt(prefs.getString("sharpness", "3"));
 		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
-		stretchToFill = prefs.getBoolean("stretchtofill", true);
+		stretchToFill = prefs.getBoolean("stretchtofill", false);
 		renderer.setClearBeforeDraw(!stretchToFill);
 		
 		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+		vibratedown = Integer.parseInt(prefs.getString("vibratedown", "5"));
+		vibrateup = Integer.parseInt(prefs.getString("vibrateup", "1"));
+		relocate = prefs.getBoolean("relocate", false);
+		swapAB = prefs.getBoolean("swapab", false);
 	}
 
 	@Override
@@ -155,15 +163,27 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 					break;
 				// A,B
 				case 8:
-					buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
+					if (swapAB) {
+						buttons[i].setBounds(width - (buttonsize * 2) + spacing * 2, bottomrowtop, (width - buttonsize) + spacing * 2, height);
+					} else {
+						buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
+					}
 					break;
 				case 9:
-					buttons[i].setBounds(width - (buttonsize * 2) + spacing * 2, bottomrowtop, (width - buttonsize) + spacing * 2, height);
+					if (swapAB) {
+						buttons[i].setBounds(width - buttonsize, bottomrowtop, width, height);
+					} else {
+						buttons[i].setBounds(width - (buttonsize * 2) + spacing * 2, bottomrowtop, (width - buttonsize) + spacing * 2, height);
+					}
 					break;
 				// Start
 				case 10:
 					buttons[i].setSize(buttonsize * 2, buttonsize);
-					buttons[i].setBounds((width / 2) - buttonsize, bottomrowtop, (width / 2) + buttonsize, height);
+					if (relocate) {
+						buttons[i].setBounds(width - buttonsize * 2, 0, width, buttonsize);
+					} else {
+						buttons[i].setBounds((width / 2) - buttonsize, bottomrowtop, (width / 2) + buttonsize, height);
+					}
 					break;
 				}
 			}
@@ -252,6 +272,8 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		}
 		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
 		mThread.setFrameskip(Integer.parseInt(prefs.getString("frameskip", "2")));
+		vibratedown = Integer.parseInt(prefs.getString("vibratedown", "5"));
+		vibrateup = Integer.parseInt(prefs.getString("vibrateup", "1"));
 	}
 
 	public void stop () {
@@ -263,7 +285,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
 			synchronized (mThread) {
 				try {
-					mThread.wait();
+					mThread.wait(3000);
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 					return;
@@ -275,10 +297,10 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
 	public static void changeButton (WonderSwanButton button, boolean newState, boolean touch) {
 		if (newState && !button.touchDown && touch) {
-			vibrator.vibrate(5);
+			vibrator.vibrate(vibratedown);
 		}
 		if (!newState && button.touchDown && touch) {
-			vibrator.vibrate(1);
+			vibrator.vibrate(vibrateup);
 		}
 		if (touch) {
 			button.touchDown = newState;

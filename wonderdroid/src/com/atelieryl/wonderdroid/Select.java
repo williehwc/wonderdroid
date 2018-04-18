@@ -47,6 +47,8 @@ import android.widget.Toast;
 public class Select extends BaseActivity {
 
     private static final String TAG = Select.class.getSimpleName();
+    
+    private static String currentRomPath = "";
 
     private final Runnable bgSwitcher = new Runnable() {
 
@@ -260,15 +262,41 @@ public class Select extends BaseActivity {
         }*/
 
         //
-        File romdir = new File(sdpath + WonderDroid.DIRECTORY);
+        
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        
+        String romPath = prefs.getString("emu_rompath", "wonderdroid");
+        if (!romPath.startsWith("/")) {
+        	romPath = "/" + romPath;
+        }
+        if (!romPath.endsWith("/")) {
+        	romPath = romPath + "/";
+        }
+        
+        String memPath = prefs.getString("emu_mempath", "wonderdroid/cartmem");
+        if (!memPath.startsWith("/")) {
+        	memPath = "/" + memPath;
+        }
+        if (!memPath.endsWith("/")) {
+        	memPath = memPath + "/";
+        }
+        
+        if (!currentRomPath.equals("") && !romPath.equals(currentRomPath)) {
+        	Intent intent = getIntent();
+        	finish();
+        	startActivity(intent);
+        }
+        currentRomPath = romPath;
+        
+        File romdir = new File(sdpath + romPath);
         romdir.mkdir();
-        File cartmemdir = new File(sdpath + WonderDroid.CARTMEMDIRECTORY);
+        File cartmemdir = new File(sdpath + memPath);
         cartmemdir.mkdir();
         //
 
         mScreenFormat = (TextView)this.findViewById(R.id.select_screenformat);
         mAssetManager = this.getAssets();
-        mRAdapter = new RomAdapter(this.getBaseContext(), sdpath + "/wonderdroid/", mAssetManager);
+        mRAdapter = new RomAdapter(this.getBaseContext(), sdpath + romPath, mAssetManager);
 
         if (mRAdapter.getCount() != 0) {
 
@@ -315,13 +343,14 @@ public class Select extends BaseActivity {
 
             mBG1 = (ImageView)this.findViewById(R.id.select_bg1);
             mBG2 = (ImageView)this.findViewById(R.id.select_bg2);
-            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
             if (prefs.getBoolean("showbackground", true)) {
             	mBG1.setVisibility(View.VISIBLE);
             	bgSwitcher.run();
             } else {
             	mBG1.setVisibility(View.INVISIBLE);
             }
+        } else {
+        	((TextView)this.findViewById(R.id.select_noroms)).setText(getResources().getString(R.string.noroms).replace("???", romPath.substring(1)));
         }
 
     }
