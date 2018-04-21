@@ -27,19 +27,19 @@ uint32_t sram_size;
 uint32_t eeprom_size;
 
 JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_reset(JNIEnv * env, jclass obj) {
-	LOGE("v30mz_reset()");
+	LOGD("v30mz_reset()");
 	v30mz_reset();
-	LOGE("WSwan_MemoryReset()");
+	LOGD("WSwan_MemoryReset()");
 	WSwan_MemoryReset();
-	LOGE("WSwan_GfxReset()");
+	LOGD("WSwan_GfxReset()");
 	WSwan_GfxReset();
-	LOGE("WSwan_SoundReset()");
+	LOGD("WSwan_SoundReset()");
 	wswan_soundreset();
-	LOGE("WSwan_InterruptReset()");
+	LOGD("WSwan_InterruptReset()");
 	WSwan_InterruptReset();
-	LOGE("WSwan_RTCReset()");
+	LOGD("WSwan_RTCReset()");
 	WSwan_RTCReset();
-	LOGE("WSwan_EEPROMReset()");
+	LOGD("WSwan_EEPROMReset()");
 	WSwan_EEPROMReset();
 
 	wsMakeTiles();
@@ -56,7 +56,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_load(JNIEnv * e
 		jboolean iswsc, jstring name, jint year, jint month, jint day, jint blood, jint sex) {
 
 	if (iswsc) {
-		LOGE("Emulating a WonderSwan Color");
+		LOGD("Emulating a WonderSwan Color");
 		wsc = 1;
 		wsVMode = 0x7;
 
@@ -75,10 +75,10 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_load(JNIEnv * e
 	}
 
 	snprintf(temp, sizeof(temp), "Loading %s", str);
-	LOGE(temp);
+	LOGD(temp);
 	FILE* file = fopen(str, "r");
 	if (file != NULL) {
-		LOGE("The file loaded!!!");
+		LOGD("The file loaded!!!");
 	}
 
 	struct stat st;
@@ -88,7 +88,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_load(JNIEnv * e
 	//rom_size = uppow2(fp->size);
 	// rom_size = 4 * 1024 * 1024;
 	//sprintf(tempstring, "size of rom: %d", rom_size);
-	// LOGE(tempstring);
+	// LOGD(tempstring);
 	if (wsCartROM != NULL) {
 		free(wsCartROM);
 	}
@@ -106,52 +106,52 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_load(JNIEnv * e
 
 	switch (header[5]) {
 		case 0x01:
-			LOGE("This is a header 0x01 ROM.");
+			LOGD("This is a header 0x01 ROM.");
 			sram_size = 8 * 1024;
 			break;
 		case 0x02:
-			LOGE("This is a header 0x02 ROM.");
+			LOGD("This is a header 0x02 ROM.");
 			sram_size = 32 * 1024;
 			break;
 		case 0x03:
-			LOGE("This is a header 0x03 ROM.");
+			LOGD("This is a header 0x03 ROM.");
 			sram_size = 16 * 65536;
 			break;
 		case 0x04:
-			LOGE("This is a header 0x04 ROM.");
+			LOGD("This is a header 0x04 ROM.");
 			sram_size = 32 * 65536;
 			break; // Dicing Knight!
 
 		case 0x10:
-			LOGE("This is a header 0x10 ROM.");
+			LOGD("This is a header 0x10 ROM.");
 			eeprom_size = 128;
 			break;
 		case 0x20:
-			LOGE("This is a header 0x20 ROM.");
+			LOGD("This is a header 0x20 ROM.");
 			eeprom_size = 2 * 1024;
 			break;
 		case 0x50:
-			LOGE("This is a header 0x50 ROM.");
+			LOGD("This is a header 0x50 ROM.");
 			eeprom_size = 1024;
 			break;
 	}
 
 	// sprintf(tempstring, "SRAM size is 0x%x", sram_size);
-	// LOGE(tempstring);
+	// LOGD(tempstring);
 
 	// sprintf(tempstring, "EEPROM size is 0x%x", eeprom_size);
-	//  LOGE(tempstring);
+	//  LOGD(tempstring);
 
 	if (header[6] & 0x1) {
-//LOGE("Game orientation is vertical");
+//LOGD("Game orientation is vertical");
 	}
 	else {
-//LOGE("Game orientation is horizontal");
+//LOGD("Game orientation is horizontal");
 	}
 
 	v30mz_init(WSwan_readmem20, WSwan_writemem20, WSwan_readport, WSwan_writeport);
 	// sprintf(tempstring, "WSwan_MemoryInit(%d, %d)", wsc, sram_size);
-	// LOGE(tempstring);
+	// LOGD(tempstring);
 	WSwan_MemoryInit(wsc, sram_size); // EEPROM and SRAM are loaded in this func.
 
 	const jbyte *namestr;
@@ -162,16 +162,16 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_load(JNIEnv * e
 	}
 	WSwan_EEPROMInit("", (uint16_t) year, (uint8_t) month, (uint8_t) day, (uint8_t) sex, (uint8_t) blood);
 
-// LOGE("WSwan_GfxInit()");
+// LOGD("WSwan_GfxInit()");
 	WSwan_GfxInit();
 
-// LOGE("WSwan_SoundInit()");
+// LOGD("WSwan_SoundInit()");
 	wswan_soundinit();
 
-// LOGE("wsMakeTiles()");
+// LOGD("wsMakeTiles()");
 	wsMakeTiles();
 
-//LOGE("reset()");
+//LOGD("reset()");
 //reset();
 }
 
@@ -181,9 +181,9 @@ JNIEXPORT jint JNICALL Java_com_atelieryl_wonderdroid_WonderSwan__1execute_1fram
 	if (ramLock)
 		return 0;
 
-	/*LOGE("Start of frame");
+	/*LOGD("Start of frame");
 	unsigned reg = v30mz_get_reg(1);
-	LOGE("Program counter now at %d", reg);*/
+	LOGD("Program counter now at %d", reg);*/
 
 	// execute the active frame cycles
 	uint16_t* fb = (uint16_t*) (*env)->GetDirectBufferAddress(env, framebuffer);
@@ -246,7 +246,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_execute_1vblank
 JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadbackupdata(JNIEnv *env, jclass obj,
 		jstring filename) {
 
-	LOGE("loading backup data");
+	LOGD("loading backup data");
 
 	char temp[256];
 	const jbyte *str;
@@ -260,12 +260,12 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadbackupdata(
 	FILE* file = fopen(str, "r");
 	if (file != NULL) {
 		if (sram_size) {
-			LOGE("Loading SRAM");
+			LOGD("Loading SRAM");
 			fread(wsSRAM, sizeof(uint8_t), sram_size, file);
 		}
 
 		else if (eeprom_size) {
-			LOGE("Loading eeprom");
+			LOGD("Loading eeprom");
 			fread(wsEEPROM, sizeof(uint8_t), eeprom_size, file);
 		}
 
@@ -276,7 +276,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadbackupdata(
 
 JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storebackupdata(JNIEnv *env, jclass obj,
 		jstring filename) {
-	LOGE("storing backup data");
+	LOGD("storing backup data");
 
 	char temp[256];
 	const jbyte *str;
@@ -291,11 +291,11 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storebackupdata
 	FILE* file = fopen(str, "w");
 	if (file != NULL) {
 		if (sram_size) {
-			LOGE("Writing SRAM");
+			LOGD("Writing SRAM");
 			fwrite(wsSRAM, sizeof(uint8_t), sram_size, file);
 		}
 		else if (eeprom_size) {
-			LOGE("Writing eeprom");
+			LOGD("Writing eeprom");
 			fwrite(wsEEPROM, sizeof(uint8_t), eeprom_size, file);
 		}
 		fclose(file);
@@ -306,7 +306,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storebackupdata
 JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNIEnv *env, jclass obj,
 		jstring filename) {
 
-	LOGE("loading ram data");
+	LOGD("loading ram data");
 
 	char temp[256];
 	const jbyte *str;
@@ -319,46 +319,29 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNI
 
 	FILE* file = fopen(str, "r");
 	if (file != NULL) {
-		LOGE("Loading RAM");
+		LOGD("Loading RAM");
 		ramLock = true;
-
-		//v30mz_reset();
-		//WSwan_GfxReset();
-		//wsMakeTiles();
-
-		uint8_t toLoad[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576];
-		fread(toLoad, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576, file);
+		uint8_t toLoad[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11];
+		fread(toLoad, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11, file);
 		memcpy(wsRAM, toLoad, 65536);
-		LOGE("Restoring registers");
 		for (int i = 0; i < 14; i++) {
 			unsigned *reg = malloc(sizeof(unsigned));
 			memcpy(reg, toLoad + 65536 + sizeof(unsigned) * i, sizeof(unsigned));
-			LOGE("LOAD Register %d value %d", i, *reg);
 			v30mz_set_reg(i + 1, *reg);
-			//free(reg);
 		}
-		LOGE("Loading SRAM with size %d", sram_size);
 		memcpy(wsSRAM, toLoad + 65536 + sizeof(unsigned) * 14, sram_size);
-		uint8_t *scanline = malloc(sizeof(uint8_t));
-		memcpy(scanline, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size, sizeof(uint8_t));
-		LOGE("Loading scanline number: %d", *scanline);
-		wsLine = *scanline;
-		LOGE("Loading graphics info");
+		memcpy(&wsLine, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size, sizeof(uint8_t));
 		memcpy(wsMonoPal, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1, 256);
 		memcpy(wsColors, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256, 32);
+		LOGD("WSC Colors at byte %d", 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256);
 		memcpy(wsCols, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256 + 32, 1024);
-		uint32_t *color = malloc(sizeof(uint32_t));
-		LOGE("Load the color");
-		memcpy(color, &wsColors[3], 4);
-		LOGE("Load the color %d", *color);
-		LOGE("Loading memory info");
+		LOGD("WSC Cols at byte %d", 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256 + 32);
 		memcpy(&ButtonWhich, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1313, 1);
 		memcpy(&ButtonReadLatch, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1314, 1);
 		memcpy(&DMASource, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1315, 4);
 		memcpy(&DMADest, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1319, 4);
 		memcpy(&DMALength, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1323, 2);
 		memcpy(&DMAControl, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1325, 1);
-		LOGE("Load DMA Control %d", DMAControl);
 		memcpy(&SoundDMASource, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1326, 4);
 		memcpy(&SoundDMALength, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1330, 2);
 		memcpy(&SoundDMAControl, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1332, 1);
@@ -366,7 +349,6 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNI
 		memcpy(&CommControl, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1337, 1);
 		memcpy(&CommData, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1338, 1);
 		memcpy(&WSButtonStatus, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1339, 2);
-		LOGE("Loading more graphics info");
 		memcpy(SpriteTable, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1341, 512);
 		memcpy(&SpriteCountCache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1853, 4);
 		memcpy(&DispControl, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1857, 1);
@@ -396,38 +378,35 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNI
 		memcpy(&HBCounter, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1883, 2);
 		memcpy(&VBCounter, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1885, 2);
 		memcpy(&VideoMode, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1887, 1);
-		LOGE("Loading color map");
 		memcpy(ColorMapG, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1888, 32);
+		LOGD("WSC Color map G at byte %d", 65536 + sizeof(unsigned) * 14 + sram_size + 1888);
 		memcpy(ColorMap, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1920, 8192);
-		LOGE("Loading tile cache");
+		LOGD("WSC Color map at byte %d", 65536 + sizeof(unsigned) * 14 + sram_size + 1920);
 		memcpy(wsTCache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 10112, 32768);
-		LOGE("X) Load the tile cache %d", wsTCache[12444]);
-		uint8_t *testvar5 = malloc(sizeof(uint8_t));
-		memcpy(testvar5, wsTCache + 12444, 1);
-		LOGE("Y) Load the tile cache %d", *testvar5);
-		uint8_t *testvar6 = malloc(sizeof(uint8_t));
-		memcpy(testvar6, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 10112 + 12444, 1);
-		LOGE("Z) Load the tile cache %d", *testvar6);
 		memcpy(wsTCacheFlipped, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 42880, 32768);
 		memcpy(wsTileRow, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 75648, 8);
 		memcpy(wsTCacheUpdate, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 75656, 512);
 		memcpy(wsTCache2, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 76168, 32768);
 		memcpy(wsTCacheFlipped2, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 108936, 32768);
 		memcpy(wsTCacheUpdate2, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 141704, 512);
-		LOGE("Loading tile");
-		memcpy(&tiles[0][0][0][0], toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 142216, 1048576);
-		LOGE("A) Load the 23rd tile %d", tiles[0][1][0][7]);
-		uint8_t *testvar2 = malloc(sizeof(uint8_t));
-		memcpy(testvar2, tiles + 23, 1);
-		LOGE("D) Load the 23rd tile %d", *testvar2);
-		uint8_t *testvar3 = malloc(sizeof(uint8_t));
-		memcpy(testvar3, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 142216 + 23, 1);
-		LOGE("C) Load the 23rd tile %d", *testvar3);
-		LOGE("B) Sanity check: %p %p", (void*)(tiles + 23), (void*)&tiles[23][0][0][0]);
+		memcpy(tiles, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 142216, 1048576);
+		/*memcpy(&IStatus, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190792, 1);
+		memcpy(&IEnable, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190793, 1);
+		memcpy(&IVectorBase, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190794, 1);
+		memcpy(&IOn_Cache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190795, sizeof(bool));
+		memcpy(&IOn_Which, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190795, 4);
+		memcpy(&IVector_Cache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190799, 4);*/
 		wsSetVideo(wsVMode, TRUE);
+		//WSwan_SetPixelFormat();
+		wsLine = 145;
+		LOGD("Line number was %d", wsLine);
+		//wswan_soundclear();
+		WSwan_Interrupt(WSINT_VBLANK);
+		while (wsExecuteLine(NULL, FALSE) != 0) {}
+		//LOGD("Line number is %d", wsLine);
 		ramLock = false;
 		fclose(file);
-		LOGE("Load complete");
+		LOGD("Load complete");
 	}
 
 }
@@ -435,7 +414,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNI
 JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storeramdata(JNIEnv *env, jclass obj,
 		jstring filename) {
 
-	LOGE("storing ram data");
+	LOGD("storing ram data");
 
 	char temp[256];
 	const jbyte *str;
@@ -448,38 +427,25 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storeramdata(JN
 
 	FILE* file = fopen(str, "w");
 	if (file != NULL) {
-		LOGE("Writing RAM");
+		LOGD("Writing RAM");
 		ramLock = true;
-		uint8_t toWrite[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576];
+		uint8_t toWrite[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11];
 		memcpy(toWrite, wsRAM, 65536);
 		for (int i = 0; i < 14; i++) {
 			unsigned reg = v30mz_get_reg(i + 1);
-			LOGE("SAVE Register %d value %d", i, reg);
 			memcpy(toWrite + 65536 + sizeof(unsigned) * i, &reg, sizeof(unsigned));
 		}
-		LOGE("Saving SRAM with size %d", sram_size);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14, wsSRAM, sram_size);
-		uint8_t *scanline = malloc(sizeof(uint8_t));
-		memcpy(scanline, &wsLine, 1);
-		LOGE("Saving scanline number: %d", *scanline);
-		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size, scanline, 1);
-		LOGE("Saving graphics info");
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size, &wsLine, 1);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1, wsMonoPal, 256);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256, wsColors, 32);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256 + 32, wsCols, 1024);
-		uint32_t *color = malloc(sizeof(uint32_t));
-		memcpy(color, toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256 + 12, 4);
-		LOGE("Save the color %d", *color);
-		LOGE("Saving memory info");
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1313, &ButtonWhich, 1);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1314, &ButtonReadLatch, 1);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1315, &DMASource, 4);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1319, &DMADest, 4);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1323, &DMALength, 2);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1325, &DMAControl, 1);
-		uint8_t *testvar = malloc(sizeof(uint8_t));
-		memcpy(testvar, &DMAControl, 1);
-		LOGE("Save DMA Control %d", *testvar);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1326, &SoundDMASource, 4);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1330, &SoundDMALength, 2);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1332, &SoundDMAControl, 1);
@@ -487,7 +453,6 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storeramdata(JN
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1337, &CommControl, 1);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1338, &CommData, 1);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1339, &WSButtonStatus, 2);
-		LOGE("Saving more graphics info");
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1341, SpriteTable, 512);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1853, &SpriteCountCache, 4);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1857, &DispControl, 1);
@@ -517,27 +482,30 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storeramdata(JN
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1883, &HBCounter, 2);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1885, &VBCounter, 2);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1887, &VideoMode, 1);
-		LOGE("Saving color map");
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1888, ColorMapG, 32);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1920, ColorMap, 8192);
-		LOGE("Saving tile cache");
+		/*LOGD("Is there a non-zero?");
+		for (int i = 0; i < 16 * 16 * 16; i++) {
+			if (ColorMap[i] != 0) {
+				LOGD("Yes there is, at position %d", i);
+			}
+		}*/
+		LOGD("JNI Color map's memory address is %p", ColorMap);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 10112, wsTCache, 32768);
-		uint8_t *testvar3 = malloc(sizeof(uint8_t));
-		memcpy(testvar3, toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 10112 + 12444, 1);
-		LOGE("Save the tile cache %d", *testvar3);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 42880, wsTCacheFlipped, 32768);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 75648, wsTileRow, 8);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 75656, wsTCacheUpdate, 512);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 76168, wsTCache2, 32768);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 108936, wsTCacheFlipped2, 32768);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 141704, wsTCacheUpdate2, 512);
-		LOGE("Saving tile");
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 142216, tiles, 1048576);
-		uint8_t *testvar2 = malloc(sizeof(uint8_t));
-		memcpy(testvar2, toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 142216 + 23, 1);
-		LOGE("Save the tile %d", *testvar2);
-		fwrite(toWrite, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576, file);
-		LOGE("W) Sanity check: %p %p %p %p %p", (void*)&tiles[23][0][0][0], (void*)&tiles[0][0][0][0], (void*)&tiles[0][1][0][7], (void*)(tiles + 23), (void*)(tiles) + 23);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1190792, &IStatus, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1190793, &IEnable, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1190794, &IVectorBase, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1190795, &IOn_Cache, sizeof(bool));
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190795, &IOn_Which, 4);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190799, &IVector_Cache, 4);
+		fwrite(toWrite, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11, file);
 		ramLock = false;
 		fclose(file);
 	}

@@ -28,7 +28,37 @@
 #include "v30mz.h"
 #include "rtc.h"
 
+uint32_t wsMonoPal[16][4];
+uint32_t wsColors[8];
+uint32_t wsCols[16][16];
+
+uint16_t ColorMapG[16];
+uint16_t ColorMap[16 * 16 * 16];
 static uint32_t LayerEnabled = 7; // BG, FG, sprites
+
+/*current scanline*/
+
+uint8_t SpriteTable[0x80][4];
+uint32_t SpriteCountCache;
+uint8_t DispControl;
+uint8_t BGColor;
+uint8_t LineCompare;
+uint8_t SPRBase;
+uint8_t SpriteStart, SpriteCount;
+uint8_t FGBGLoc;
+uint8_t FGx0, FGy0, FGx1, FGy1;
+uint8_t SPRx0, SPRy0, SPRx1, SPRy1;
+
+uint8_t BGXScroll, BGYScroll;
+uint8_t FGXScroll, FGYScroll;
+uint8_t LCDControl, LCDIcons;
+
+uint8_t BTimerControl;
+uint16_t HBTimerPeriod;
+uint16_t VBTimerPeriod;
+
+uint16_t HBCounter, VBCounter;
+uint8_t VideoMode;
 
 void WSwan_GfxInit(void) {
 }
@@ -586,6 +616,7 @@ void wsScanline(uint16_t *target) {
 		for (l = 0; l < 224; l++) {
 			target[l] = (ColorMap[wsCols[b_bg_pal[l + 7]][b_bg[(l + 7)] & 0xf]]);
 		}
+		//LOGD("GFX Color map's memory address is %p", ColorMap);
 	}
 	else {
 		for (l = 0; l < 224; l++) {
