@@ -41,7 +41,21 @@ uint8_t *wsCartROM;
 uint32_t sram_size;
 uint32_t eeprom_size;
 
-bool ramLock = false;
+uint8_t ButtonWhich, ButtonReadLatch;
+
+uint32_t DMASource, DMADest;
+uint16_t DMALength;
+uint8_t DMAControl;
+
+uint32_t SoundDMASource;
+uint16_t SoundDMALength;
+uint8_t SoundDMAControl;
+
+uint8_t BankSelector[4];
+
+uint8_t CommControl, CommData;
+
+extern uint16_t WSButtonStatus;
 
 inline void WSwan_writemem20(uint32_t A, uint8_t V) {
 	uint32_t offset, bank;

@@ -26,6 +26,8 @@ uint16_t WSButtonStatus;
 uint32_t sram_size;
 uint32_t eeprom_size;
 
+bool stateLock;
+
 JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_reset(JNIEnv * env, jclass obj) {
 	LOGD("v30mz_reset()");
 	v30mz_reset();
@@ -178,12 +180,9 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_load(JNIEnv * e
 JNIEXPORT jint JNICALL Java_com_atelieryl_wonderdroid_WonderSwan__1execute_1frame(JNIEnv *env, jclass obj,
 		jboolean skip, jboolean audio, jobject framebuffer, jshortArray audiobuffer) {
 
-	if (ramLock)
+	if (stateLock) {
 		return 0;
-
-	/*LOGD("Start of frame");
-	unsigned reg = v30mz_get_reg(1);
-	LOGD("Program counter now at %d", reg);*/
+	}
 
 	// execute the active frame cycles
 	uint16_t* fb = (uint16_t*) (*env)->GetDirectBufferAddress(env, framebuffer);
@@ -243,7 +242,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_execute_1vblank
 	//while(wsExecuteLine(NULL, FALSE) != 0){}
 }
 
-JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadbackupdata(JNIEnv *env, jclass obj,
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadbackup(JNIEnv *env, jclass obj,
 		jstring filename) {
 
 	LOGD("loading backup data");
@@ -274,7 +273,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadbackupdata(
 
 }
 
-JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storebackupdata(JNIEnv *env, jclass obj,
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_savebackup(JNIEnv *env, jclass obj,
 		jstring filename) {
 	LOGD("storing backup data");
 
@@ -303,10 +302,10 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storebackupdata
 
 }
 
-JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNIEnv *env, jclass obj,
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadstate(JNIEnv *env, jclass obj,
 		jstring filename) {
 
-	LOGD("loading ram data");
+	LOGD("loading state data");
 
 	char temp[256];
 	const jbyte *str;
@@ -315,12 +314,10 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNI
 		return; /* OutOfMemoryError already thrown */
 	}
 
-	snprintf(temp, sizeof(temp), "ram size always 65536");
-
 	FILE* file = fopen(str, "r");
 	if (file != NULL) {
-		LOGD("Loading RAM");
-		ramLock = true;
+		LOGD("Loading state");
+		stateLock = true;
 		uint8_t toLoad[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11];
 		fread(toLoad, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11, file);
 		memcpy(wsRAM, toLoad, 65536);
@@ -333,9 +330,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNI
 		memcpy(&wsLine, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size, sizeof(uint8_t));
 		memcpy(wsMonoPal, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1, 256);
 		memcpy(wsColors, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256, 32);
-		LOGD("WSC Colors at byte %d", 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256);
 		memcpy(wsCols, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256 + 32, 1024);
-		LOGD("WSC Cols at byte %d", 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256 + 32);
 		memcpy(&ButtonWhich, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1313, 1);
 		memcpy(&ButtonReadLatch, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1314, 1);
 		memcpy(&DMASource, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1315, 4);
@@ -379,9 +374,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNI
 		memcpy(&VBCounter, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1885, 2);
 		memcpy(&VideoMode, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1887, 1);
 		memcpy(ColorMapG, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1888, 32);
-		LOGD("WSC Color map G at byte %d", 65536 + sizeof(unsigned) * 14 + sram_size + 1888);
 		memcpy(ColorMap, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1920, 8192);
-		LOGD("WSC Color map at byte %d", 65536 + sizeof(unsigned) * 14 + sram_size + 1920);
 		memcpy(wsTCache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 10112, 32768);
 		memcpy(wsTCacheFlipped, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 42880, 32768);
 		memcpy(wsTileRow, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 75648, 8);
@@ -390,31 +383,27 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadramdata(JNI
 		memcpy(wsTCacheFlipped2, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 108936, 32768);
 		memcpy(wsTCacheUpdate2, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 141704, 512);
 		memcpy(tiles, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 142216, 1048576);
-		/*memcpy(&IStatus, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190792, 1);
+		memcpy(&IStatus, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190792, 1);
 		memcpy(&IEnable, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190793, 1);
 		memcpy(&IVectorBase, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190794, 1);
 		memcpy(&IOn_Cache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190795, sizeof(bool));
 		memcpy(&IOn_Which, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190795, 4);
-		memcpy(&IVector_Cache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190799, 4);*/
+		memcpy(&IVector_Cache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190799, 4);
 		wsSetVideo(wsVMode, TRUE);
-		//WSwan_SetPixelFormat();
-		wsLine = 145;
-		LOGD("Line number was %d", wsLine);
-		//wswan_soundclear();
+		/*wsLine = 145;
 		WSwan_Interrupt(WSINT_VBLANK);
-		while (wsExecuteLine(NULL, FALSE) != 0) {}
-		//LOGD("Line number is %d", wsLine);
-		ramLock = false;
+		while (wsExecuteLine(NULL, FALSE) != 0) {}*/
+		stateLock = false;
 		fclose(file);
 		LOGD("Load complete");
 	}
 
 }
 
-JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storeramdata(JNIEnv *env, jclass obj,
+JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_savestate(JNIEnv *env, jclass obj,
 		jstring filename) {
 
-	LOGD("storing ram data");
+	LOGD("storing state data");
 
 	char temp[256];
 	const jbyte *str;
@@ -423,12 +412,10 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storeramdata(JN
 		return; /* OutOfMemoryError already thrown */
 	}
 
-	snprintf(temp, sizeof(temp), "ram size always 65536");
-
 	FILE* file = fopen(str, "w");
 	if (file != NULL) {
-		LOGD("Writing RAM");
-		ramLock = true;
+		LOGD("Writing state");
+		stateLock = true;
 		uint8_t toWrite[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11];
 		memcpy(toWrite, wsRAM, 65536);
 		for (int i = 0; i < 14; i++) {
@@ -484,13 +471,6 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storeramdata(JN
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1887, &VideoMode, 1);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1888, ColorMapG, 32);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1920, ColorMap, 8192);
-		/*LOGD("Is there a non-zero?");
-		for (int i = 0; i < 16 * 16 * 16; i++) {
-			if (ColorMap[i] != 0) {
-				LOGD("Yes there is, at position %d", i);
-			}
-		}*/
-		LOGD("JNI Color map's memory address is %p", ColorMap);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 10112, wsTCache, 32768);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 42880, wsTCacheFlipped, 32768);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 75648, wsTileRow, 8);
@@ -506,7 +486,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_storeramdata(JN
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190795, &IOn_Which, 4);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190799, &IVector_Cache, 4);
 		fwrite(toWrite, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11, file);
-		ramLock = false;
+		stateLock = false;
 		fclose(file);
 	}
 

@@ -616,7 +616,6 @@ void wsScanline(uint16_t *target) {
 		for (l = 0; l < 224; l++) {
 			target[l] = (ColorMap[wsCols[b_bg_pal[l + 7]][b_bg[(l + 7)] & 0xf]]);
 		}
-		//LOGD("GFX Color map's memory address is %p", ColorMap);
 	}
 	else {
 		for (l = 0; l < 224; l++) {

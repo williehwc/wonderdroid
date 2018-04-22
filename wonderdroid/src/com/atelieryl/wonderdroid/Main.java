@@ -130,7 +130,7 @@ public class Main extends BaseActivity {
 
                 WonderSwan.reset();
                 if (mCartMem.isFile() && (mCartMem.length() > 0)) {
-                    WonderSwan.loadbackupdata(mCartMem.getAbsolutePath());
+                    WonderSwan.loadbackup(mCartMem.getAbsolutePath());
                 }
                 view.start();
                 // Show controls automatically
@@ -172,11 +172,11 @@ public class Main extends BaseActivity {
                 // quit();
                 // return true;
             case R.id.main_savestate:
-            	WonderSwan.storeramdata(mAutoSav.getAbsolutePath());
+            	WonderSwan.savestate(mAutoSav.getAbsolutePath());
             	return true;
             case R.id.main_loadstate:
-            	//WonderSwan.loadbackupdata(mCartMem.getAbsolutePath());
-            	WonderSwan.loadramdata(mAutoSav.getAbsolutePath());
+            	//WonderSwan.loadbackup(mCartMem.getAbsolutePath());
+            	WonderSwan.loadstate(mAutoSav.getAbsolutePath());
             	return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -252,8 +252,8 @@ public class Main extends BaseActivity {
     	// Called when switching away
     	super.onStop();
     	view.stop();
-        WonderSwan.storebackupdata(mCartMem.getAbsolutePath());
-        //WonderSwan.storeramdata(mAutoSav.getAbsolutePath());
+        WonderSwan.savebackup(mCartMem.getAbsolutePath());
+        //WonderSwan.savestate(mAutoSav.getAbsolutePath());
     }
 
 }
