@@ -35,7 +35,9 @@
     <string name="enablesound">Enable sound</string>
     <string name="showcontrols">Show controls automatically</string>
     <string name="showcontrolsdescription">When starting a game</string>
-    <string name="onscreencontrolsettings">Onscreen controls</string>
+    <string name="mapcontrols">Map controls</string>
+    <string name="mapcontrolsdescription">For keyboards and other input peripherals</string>
+    <string name="arrangeonscreencontrols">Arrange onscreen controls</string>
     <string name="vibratedown">Button-down vibration</string>
     <string name="vibratedowndescription">When pressing an onscreen control</string>
     <string name="vibrateup">Button-up vibration</string>

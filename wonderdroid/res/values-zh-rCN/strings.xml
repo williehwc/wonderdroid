@@ -16,7 +16,9 @@
     <string name="togglescreencontrols">虚拟控制器</string>
     <string name="pause">暂停</string>
     <string name="reset">重置</string>
-    <string name="settings_cat_controls">控制按键设置</string>
+    <string name="settings_cat_controls">控制</string>
+    <string name="mapcontrols">控制按键设置</string>
+    <string name="arrangeonscreencontrols">排列虚拟控制器</string>
     <string name="control_x2">X2 (右)</string>
     <string name="control_x3">X3 (下)</string>
     <string name="control_x4">X4 (左)</string>

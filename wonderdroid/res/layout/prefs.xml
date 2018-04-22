@@ -1,53 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <PreferenceCategory android:title="@string/settings_cat_controls" >
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolY1"
-            android:title="Y1" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolY2"
-            android:title="Y2" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolY3"
-            android:title="Y3" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolY4"
-            android:title="Y4" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolX1"
-            android:title="@string/control_x1" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolX2"
-            android:title="@string/control_x2" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolX3"
-            android:title="@string/control_x3" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolX4"
-            android:title="@string/control_x4" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolA"
-            android:title="A" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolB"
-            android:title="B" />
-
-        <com.atelieryl.wonderdroid.views.HardwareButtonPreference
-            android:key="hwcontrolStart"
-            android:title="Start" />
+     
+    <PreferenceCategory android:title="@string/settings_cat_controls">
+        <Preference
+            android:key="mapcontrols"
+            android:title="@string/mapcontrols"
+            android:summary="@string/mapcontrolsdescription" />
+        <Preference
+            android:key="arrangeonscreencontrols"
+            android:title="@string/arrangeonscreencontrols" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="showcontrols"
+            android:title="@string/showcontrols"
+            android:summary="@string/showcontrolsdescription" />
+        <ListPreference
+            android:entries="@array/vibration"
+            android:entryValues="@array/vibrationvalues"
+            android:key="vibratedown"
+            android:title="@string/vibratedown"
+            android:defaultValue="5"
+            android:summary="@string/vibratedowndescription" />
+        <ListPreference
+            android:entries="@array/vibration"
+            android:entryValues="@array/vibrationvalues"
+            android:key="vibrateup"
+            android:title="@string/vibrateup"
+            android:defaultValue="1"
+            android:summary="@string/vibrateupdescription" />
+        
     </PreferenceCategory>
-
+    
     <PreferenceCategory android:title="@string/emulatorsettings" >
 
         <CheckBoxPreference
@@ -101,38 +84,6 @@
             android:defaultValue="wonderdroid/cartmem"
             android:title="@string/overridemempath" />
         
-    </PreferenceCategory>
-     
-    <PreferenceCategory android:title="@string/onscreencontrolsettings">
-        <CheckBoxPreference
-            android:defaultValue="true"
-            android:key="showcontrols"
-            android:title="@string/showcontrols"
-            android:summary="@string/showcontrolsdescription" />
-        <ListPreference
-            android:entries="@array/vibration"
-            android:entryValues="@array/vibrationvalues"
-            android:key="vibratedown"
-            android:title="@string/vibratedown"
-            android:defaultValue="5"
-            android:summary="@string/vibratedowndescription" />
-        <ListPreference
-            android:entries="@array/vibration"
-            android:entryValues="@array/vibrationvalues"
-            android:key="vibrateup"
-            android:title="@string/vibrateup"
-            android:defaultValue="1"
-            android:summary="@string/vibrateupdescription" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="relocate"
-            android:title="@string/relocate"
-            android:summary="@string/relocatedescription" />
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:key="swapab"
-            android:title="@string/swapab"
-            android:summary="@string/relocatedescription" />
     </PreferenceCategory>
     
     <PreferenceCategory android:title="@string/graphicssettings" >
