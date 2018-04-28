@@ -9,6 +9,7 @@ import com.atelieryl.wonderdroid.WonderSwan;
 import com.atelieryl.wonderdroid.WonderSwan.WonderSwanButton;
 import com.atelieryl.wonderdroid.WonderSwanRenderer;
 import com.atelieryl.wonderdroid.utils.EmuThread;
+import com.atelieryl.wonderdroid.VibrateTask;
 
 import android.app.Activity;
 import android.content.Context;
@@ -25,7 +26,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
-import android.os.Vibrator;
+
 
 public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
@@ -39,7 +40,7 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private boolean controlsVisible = false;
 	private final GradientDrawable[] buttons;
 	private final TouchInputHandler inputHandler;
-	private Context mContext;
+	private static Context mContext;
 	
 	private float actualWidthToDrawnWidthRatio = 0;
 	private float actualHeightToDrawnHeightRatio = 0;
@@ -49,9 +50,9 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	private int sharpness = 3;
 	private boolean stretchToFill = false;
 	
-	static Vibrator vibrator;
 	static int vibratedown = 5;
 	static int vibrateup = 1;
+
 	boolean relocate = false;
 	boolean swapAB = false;
 
@@ -100,9 +101,9 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 		stretchToFill = prefs.getBoolean("stretchtofill", false);
 		renderer.setClearBeforeDraw(!stretchToFill);
 		
-		vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
 		vibratedown = Integer.parseInt(prefs.getString("vibratedown", "5"));
 		vibrateup = Integer.parseInt(prefs.getString("vibrateup", "1"));
+
 		relocate = prefs.getBoolean("relocate", false);
 		swapAB = prefs.getBoolean("swapab", false);
 	}
@@ -297,10 +298,10 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 
 	public static void changeButton (WonderSwanButton button, boolean newState, boolean touch) {
 		if (newState && !button.touchDown && touch && vibratedown > 0) {
-			vibrator.vibrate(vibratedown);
+			new VibrateTask(mContext).execute(vibratedown);
 		}
 		if (!newState && button.touchDown && touch && vibrateup > 0) {
-			vibrator.vibrate(vibrateup);
+			new VibrateTask(mContext).execute(vibrateup);
 		}
 		if (touch) {
 			button.touchDown = newState;
