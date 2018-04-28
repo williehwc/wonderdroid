@@ -296,10 +296,10 @@ public class EmuView extends SurfaceView implements SurfaceHolder.Callback {
 	}
 
 	public static void changeButton (WonderSwanButton button, boolean newState, boolean touch) {
-		if (newState && !button.touchDown && touch) {
+		if (newState && !button.touchDown && touch && vibratedown > 0) {
 			vibrator.vibrate(vibratedown);
 		}
-		if (!newState && button.touchDown && touch) {
+		if (!newState && button.touchDown && touch && vibrateup > 0) {
 			vibrator.vibrate(vibrateup);
 		}
 		if (touch) {

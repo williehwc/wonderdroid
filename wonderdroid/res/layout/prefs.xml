@@ -100,6 +100,10 @@
             android:maxLength="256"
             android:defaultValue="wonderdroid/cartmem"
             android:title="@string/overridemempath" />
+        <Preference
+            android:enabled="false"
+            android:title="SD Card / カード / 卡"
+            android:summary="Coming soon / 請うご期待 / 敬請期待" />
         
     </PreferenceCategory>
      
