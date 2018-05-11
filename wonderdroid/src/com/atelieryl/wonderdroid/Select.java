@@ -14,6 +14,7 @@ import com.google.ads.AdView;
 import com.atelieryl.wonderdroid.utils.RomAdapter;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -182,8 +183,7 @@ public class Select extends BaseActivity {
                 .setMessage(R.string.reportdescription)
                 .setPositiveButton(R.string.issues, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) { 
-                    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/williehwc/wonderdroid/issues"));
-                    	startActivity(browserIntent);
+                    	openURL("https://github.com/williehwc/wonderdroid/issues");
                     }
                  })
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
@@ -194,16 +194,14 @@ public class Select extends BaseActivity {
                 .show();
             	return true;
             case R.id.select_moreappsmi:
-            	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/dev?id=8429993243664540065"));
-            	startActivity(browserIntent);
+            	openURL("https://play.google.com/store/apps/dev?id=8429993243664540065");
             	return true;
             case R.id.select_aboutmi:
                 builder.setTitle(R.string.about)
                 .setMessage(R.string.aboutdescription)
                 .setPositiveButton(R.string.visit, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) { 
-                    	Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://yearbooklabs.com/"));
-                    	startActivity(browserIntent);
+                    	openURL("http://yearbooklabs.com/");
                     }
                  })
                 .setNegativeButton(R.string.close, new DialogInterface.OnClickListener() {
@@ -216,6 +214,25 @@ public class Select extends BaseActivity {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+    
+    private void openURL(String url) {
+    	try {
+    		Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+    		startActivity(browserIntent);
+    	} catch (Exception e) {
+    		android.text.ClipboardManager clipboard = (android.text.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
+		    clipboard.setText(url);
+    		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+    		builder.setTitle(R.string.cannotopenurl)
+            .setMessage(R.string.cannotopenurldescription)
+            .setPositiveButton(R.string.close, new DialogInterface.OnClickListener() {
+            	public void onClick(DialogInterface dialog, int which) { 
+                    // do nothing
+                }
+             })
+            .show();
+    	}
     }
 
     private void startEmu(int romid) {
