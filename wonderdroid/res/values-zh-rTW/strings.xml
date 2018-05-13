@@ -30,7 +30,7 @@
     <string name="settings_cat_ws">WonderSwan 剖析</string>
     <string name="name">姓名</string>
     <string name="overriderompath">ROM 路徑</string>
-    <string name="overridemempath">存档路径</string>
+    <string name="overridemempath">存檔路徑</string>
     <string name="emulatorsettings">偏好</string>
     <string name="enablesound">打開聲音</string>
     <string name="showcontrols">自動打開虛擬控制器</string>

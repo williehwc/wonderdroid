@@ -306,9 +306,9 @@ public class Select extends BaseActivity {
         currentRomPath = romPath;
         
         File romdir = new File(sdpath + romPath);
-        romdir.mkdir();
+        romdir.mkdirs();
         File cartmemdir = new File(sdpath + memPath);
-        cartmemdir.mkdir();
+        cartmemdir.mkdirs();
         //
 
         mScreenFormat = (TextView)this.findViewById(R.id.select_screenformat);
