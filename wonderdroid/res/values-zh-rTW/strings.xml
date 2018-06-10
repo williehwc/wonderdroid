@@ -4,7 +4,7 @@
     <string name="app_name">WonderDroid X</string>
     <string name="crash_string">WonderDroid X 崩潰了!</string>
     <string name="noroms">沒有找到 ROM – 請退出, 下載 ROM 放到 ROM 資料夾 ???, 然後再重試。</string>
-    <string name="nosdcard">SD卡不可用.</string>
+    <string name="nosdcard">注意: 硬碟不可用。</string>
     <string name="colour">彩色 —\u00A0</string>
     <string name="mono">黑白 —\u00A0</string>
     <string name="vertical">垂直</string>
@@ -61,6 +61,14 @@
     <string name="reportdescription">如果遊戲性能及速度不佳，可嘗試調整跳幀或銳利度，如果無效請po問題於 GitHub，謝謝。</string>
     <string name="issues">GitHub 問題</string>
     <string name="moreapps">下載更多 YL APP</string>
+    <string name="sdcardinfo">如何使用SD卡</string>
+    <string name="rompatherror">ROM 路徑錯誤</string>
+	<string name="rompatherrordescription">路徑 ??? 不可用。請在選項裡輸入別的路徑。</string>
+	<string name="mempatherror">存檔路徑錯誤</string>
+	<string name="mempatherrordescription">路徑 ??? 只讀或不可用。請在選項裡輸入別的路徑。</string>
+	<string name="gotopreferences">選項</string>
+	<string name="readmemfileerror">無法讀取存檔</string>
+	<string name="writememfileerror">無法存檔</string>
 
     <string-array name="sexes">
         <item>男</item>

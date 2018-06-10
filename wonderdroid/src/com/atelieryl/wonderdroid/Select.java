@@ -2,6 +2,7 @@
 package com.atelieryl.wonderdroid;
 
 import java.io.File;
+import java.util.Locale;
 import java.util.Random;
 
 import com.actionbarsherlock.view.Menu;
@@ -25,6 +26,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
@@ -126,6 +128,8 @@ public class Select extends BaseActivity {
     private GridView grid;
 
     private boolean adSupported = true;
+    
+    private AlertDialog pathErrorAlertDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -133,8 +137,8 @@ public class Select extends BaseActivity {
 
         setContentView(R.layout.select);
         gallery = (Gallery)this.findViewById(R.id.select_gallery);
-        if (gallery == null)
-            grid = (GridView)this.findViewById(R.id.select_grid);
+        /*if (gallery == null)
+            grid = (GridView)this.findViewById(R.id.select_grid);*/
 
         handler = new Handler();
         fade = AnimationUtils.loadAnimation(this, R.anim.splashfade);
@@ -156,6 +160,31 @@ public class Select extends BaseActivity {
         });
 
         findViewById(android.R.id.content).setBackgroundColor(Color.parseColor("#303030"));
+        
+        // Help translate button
+        if (Locale.getDefault().getLanguage().equals("ja")) {
+        	final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            boolean hideTranslate = prefs.getBoolean("hidetranslate", false);
+            if (!hideTranslate) {
+            	findViewById(R.id.helptranslate).setVisibility(View.VISIBLE);
+            	findViewById(R.id.helptranslate).bringToFront();
+	        	findViewById(R.id.helptranslatebutton).setOnClickListener(new View.OnClickListener() {
+	        	    @Override
+	        	    public void onClick(View v) {
+	        	        openURL("https://goo.gl/forms/d1bu6SDCz0OYXBbE3");
+	        	    }
+	        	});
+	        	findViewById(R.id.hidehelptranslate).setOnClickListener(new View.OnClickListener() {
+	        	    @Override
+	        	    public void onClick(View v) {
+	        	    	findViewById(R.id.helptranslate).setVisibility(View.GONE);
+	        	    	SharedPreferences.Editor editor = prefs.edit();
+	        	    	editor.putBoolean("hidetranslate", true);
+	        	    	editor.commit();
+	        	    }
+	        	});
+            }
+        }
     }
 
     @Override
@@ -245,14 +274,17 @@ public class Select extends BaseActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        if (pathErrorAlertDialog != null) {
+        	pathErrorAlertDialog.dismiss();
+        }
         handler.removeCallbacks(bgSwitcher);
     }
 
     AdView ad = null;
 
     private void parseSupportOptions() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        adSupported = prefs.getBoolean("adsupported", false);
+        //SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        //adSupported = prefs.getBoolean("adsupported", false);
     }
 
     @Override
@@ -283,16 +315,17 @@ public class Select extends BaseActivity {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         
         String romPath = prefs.getString("emu_rompath", "wonderdroid");
-        if (!romPath.startsWith("/")) {
-        	romPath = "/" + romPath;
-        }
         if (!romPath.endsWith("/")) {
         	romPath = romPath + "/";
+        }
+        String shortRomPath = romPath;
+        if (!romPath.startsWith("/")) {
+        	romPath = sdpath + "/" + romPath;
         }
         
         String memPath = prefs.getString("emu_mempath", "wonderdroid/cartmem");
         if (!memPath.startsWith("/")) {
-        	memPath = "/" + memPath;
+        	memPath = sdpath + "/" + memPath;
         }
         if (!memPath.endsWith("/")) {
         	memPath = memPath + "/";
@@ -305,15 +338,48 @@ public class Select extends BaseActivity {
         }
         currentRomPath = romPath;
         
-        File romdir = new File(sdpath + romPath);
-        romdir.mkdirs();
-        File cartmemdir = new File(sdpath + memPath);
-        cartmemdir.mkdirs();
-        //
+        AlertDialog.Builder builder;
+        builder = new AlertDialog.Builder(this);
+        
+        boolean romdirok = false;
+        boolean cartmemdirok = false;
+        
+        try {
+	        File romdir = new File(romPath);
+	        romdir.mkdirs();
+	        romdirok = romdir.exists() && romdir.isDirectory() && romdir.canRead();
+        } catch (Exception e) { }
+        try {
+	        File cartmemdir = new File(memPath);
+	        cartmemdir.mkdirs();
+	        cartmemdirok = cartmemdir.exists() && cartmemdir.isDirectory() && cartmemdir.canWrite();
+        } catch (Exception e) { }
+        
+        if (!romdirok || !cartmemdirok) {
+        	if (!cartmemdirok) {
+        		builder.setTitle(R.string.mempatherror);
+        		builder.setMessage(R.string.mempatherrordescription);
+        		builder.setMessage(getResources().getString(R.string.mempatherrordescription).replace("???", memPath));
+        	}
+        	if (!romdirok) {
+        		builder.setTitle(R.string.rompatherror);
+        		builder.setMessage(getResources().getString(R.string.rompatherrordescription).replace("???", romPath));
+        		((TextView)this.findViewById(R.id.select_noroms)).setText(getResources().getString(R.string.rompatherrordescription).replace("???", romPath));
+        	}
+            builder.setPositiveButton(R.string.gotopreferences, new DialogInterface.OnClickListener() {
+	            public void onClick(DialogInterface dialog, int which) { 
+	            	Intent intent = new Intent(Select.this, Prefs.class);
+	                startActivity(intent);
+	            }
+	        });
+            pathErrorAlertDialog = builder.show();
+        }
+        
+        if (!romdirok) return;
 
         mScreenFormat = (TextView)this.findViewById(R.id.select_screenformat);
         mAssetManager = this.getAssets();
-        mRAdapter = new RomAdapter(this.getBaseContext(), sdpath + romPath, mAssetManager);
+        mRAdapter = new RomAdapter(this.getBaseContext(), romPath, mAssetManager);
 
         if (mRAdapter.getCount() != 0) {
 
@@ -367,7 +433,7 @@ public class Select extends BaseActivity {
             	mBG1.setVisibility(View.INVISIBLE);
             }
         } else {
-        	((TextView)this.findViewById(R.id.select_noroms)).setText(getResources().getString(R.string.noroms).replace("???", romPath.substring(1)));
+        	((TextView)this.findViewById(R.id.select_noroms)).setText(getResources().getString(R.string.noroms).replace("???", shortRomPath));
         }
 
     }

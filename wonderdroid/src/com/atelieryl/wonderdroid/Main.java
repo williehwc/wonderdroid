@@ -21,6 +21,7 @@ import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class Main extends BaseActivity {
 
@@ -72,7 +73,7 @@ public class Main extends BaseActivity {
         
         memPath = prefs.getString("emu_mempath", "wonderdroid/cartmem");
         if (!memPath.startsWith("/")) {
-        	memPath = "/" + memPath;
+        	memPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + memPath;
         }
         if (!memPath.endsWith("/")) {
         	memPath = memPath + "/";
@@ -88,13 +89,12 @@ public class Main extends BaseActivity {
 
             @Override
             protected Void doInBackground(Void... params) {
-                mCartMem = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + memPath + mRomHeader.internalname + ".mem");
+                mCartMem = new File(memPath + mRomHeader.internalname + ".mem");
                 try {
                     mCartMem.createNewFile();
                 } catch (IOException e) {
                     e.printStackTrace();
-                    throw new RuntimeException();
+                    //throw new RuntimeException();
                 }
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Main.this);
@@ -118,7 +118,8 @@ public class Main extends BaseActivity {
                 }
 
                 WonderSwan.reset();
-                if (mCartMem.isFile() && (mCartMem.length() > 0)) {
+                
+                if (checkFileAccess(mCartMem, false) && (mCartMem.length() > 0)) {
                     WonderSwan.loadbackupdata(mCartMem.getAbsolutePath());
                 }
                 view.start();
@@ -234,7 +235,28 @@ public class Main extends BaseActivity {
     	// Called when switching away
     	super.onStop();
     	view.stop();
-        WonderSwan.storebackupdata(mCartMem.getAbsolutePath());
+    	if (checkFileAccess(mCartMem, true)) {
+    		WonderSwan.storebackupdata(mCartMem.getAbsolutePath());
+    	}
+    }
+    
+    public boolean checkFileAccess(File file, boolean write) {
+    	boolean accessOK = false;
+    	try {
+    		if (file.isFile() && (!write || file.canWrite()) && (write || file.canRead())) {
+    			accessOK = true;
+    		}
+    	} catch (Exception e) {
+    		
+    	}
+    	if (!accessOK) {
+    		if (write) {
+    			Toast.makeText(this, R.string.writememfileerror, Toast.LENGTH_SHORT).show();
+    		} else {
+    			Toast.makeText(this, R.string.readmemfileerror, Toast.LENGTH_SHORT).show();
+    		}
+    	}
+    	return accessOK;
     }
 
 }
