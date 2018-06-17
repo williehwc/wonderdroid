@@ -7,7 +7,11 @@ import com.actionbarsherlock.view.MenuItem;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 import com.atelieryl.wonderdroid.utils.RomAdapter.Rom;
 import com.atelieryl.wonderdroid.views.EmuView;
@@ -40,8 +44,6 @@ public class Main extends BaseActivity {
     private WonderSwanHeader mRomHeader;
 
     private File mCartMem;
-
-    private File mAutoSav;
     
     private boolean mControlsVisible = false;
     
@@ -50,6 +52,10 @@ public class Main extends BaseActivity {
     private boolean showControls = true;
     
     private String memPath = "wonderdroid/cartmem";
+    
+    private Menu menu;
+    
+    private String packageName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -98,15 +104,6 @@ public class Main extends BaseActivity {
                     e.printStackTrace();
                     //throw new RuntimeException();
                 }
-                
-                mAutoSav = new File(Environment.getExternalStorageDirectory().getAbsolutePath()
-                        + "/wonderdroid/cartmem/" + mRomHeader.internalname + "_auto.sav");
-                try {
-                	mAutoSav.createNewFile();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new RuntimeException();
-                }
 
                 SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(Main.this);
                 String name = prefs.getString("ws_name", "");
@@ -130,7 +127,7 @@ public class Main extends BaseActivity {
 
                 WonderSwan.reset();
                 
-                if (checkFileAccess(mCartMem, false) && (mCartMem.length() > 0)) {
+                if (checkFileAccess(mCartMem, false, false) && (mCartMem.length() > 0)) {
                     WonderSwan.loadbackup(mCartMem.getAbsolutePath());
                 }
                 view.start();
@@ -143,6 +140,8 @@ public class Main extends BaseActivity {
         };
 
         loader.execute((Void[])null);
+        
+        packageName = getPackageName();
     }
 
     @Override
@@ -173,11 +172,44 @@ public class Main extends BaseActivity {
                 // quit();
                 // return true;
             case R.id.main_savestate:
-            	WonderSwan.savestate(mAutoSav.getAbsolutePath());
-            	return true;
             case R.id.main_loadstate:
-            	//WonderSwan.loadbackup(mCartMem.getAbsolutePath());
-            	WonderSwan.loadstate(mAutoSav.getAbsolutePath());
+            	updateStateMenuTitles();
+            	return true;
+            case R.id.load_a1:
+            	loadState(-1);
+            	return true;
+            case R.id.load_0:
+            	loadState(0);
+            	return true;
+            case R.id.load_1:
+            	loadState(1);
+            	return true;
+            case R.id.load_2:
+            	loadState(2);
+            	return true;
+            case R.id.load_3:
+            	loadState(3);
+            	return true;
+            case R.id.load_4:
+            	loadState(4);
+            	return true;
+            case R.id.load_5:
+            	loadState(5);
+            	return true;
+            case R.id.save_1:
+            	saveState(1);
+            	return true;
+            case R.id.save_2:
+            	saveState(2);
+            	return true;
+            case R.id.save_3:
+            	saveState(3);
+            	return true;
+            case R.id.save_4:
+            	saveState(4);
+            	return true;
+            case R.id.save_5:
+            	saveState(5);
             	return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -188,8 +220,37 @@ public class Main extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getSupportMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-
+        this.menu = menu;
         return true;
+    }
+    
+    public void updateStateMenuTitles() {
+    	for (int i = -1; i <= 5; i++) {
+    		String statePath = memPath + mRomHeader.internalname + "_" + Integer.toString(i).replace("-", "a") + ".sav";
+    		String menuTitle = getResources().getString(R.string.slot) + " " + Integer.toString(i).replace("-", "a");
+        	if (i < 0) {
+        		menuTitle = getResources().getString(R.string.auto);
+        	} else if (i == 0) {
+        		menuTitle = getResources().getString(R.string.undo);
+        	}
+        	menuTitle += ": ";
+        	File stateFile = new File(statePath);
+        	int loadStateMenuItemId = getResources().getIdentifier("load_" + Integer.toString(i).replace("-", "a"), "id", packageName);
+        	MenuItem loadStateMenuItem = menu.findItem(loadStateMenuItemId);
+        	if (checkFileAccess(stateFile, false, true)) {
+        		menuTitle += formatDate(stateFile.lastModified());
+        		loadStateMenuItem.setEnabled(true);
+        	} else {
+        		menuTitle += getResources().getString(R.string.empty);
+        		loadStateMenuItem.setEnabled(false);
+        	}
+        	loadStateMenuItem.setTitle(menuTitle);
+        	if (i > 0) {
+	        	int saveStateMenuItemId = getResources().getIdentifier("save_" + Integer.toString(i), "id", packageName);
+	        	MenuItem saveStateMenuItem = menu.findItem(saveStateMenuItemId);
+	        	saveStateMenuItem.setTitle(menuTitle);
+        	}
+    	}
     }
 
     private void toggleControls() {
@@ -246,6 +307,10 @@ public class Main extends BaseActivity {
     	// Called when sleeping with emulator open and when switching away
         super.onPause();
         view.pause();
+        saveState(-1);
+    	if (checkFileAccess(mCartMem, true, false)) {
+    		WonderSwan.savebackup(mCartMem.getAbsolutePath());
+    	}
     }
     
     @Override
@@ -253,13 +318,34 @@ public class Main extends BaseActivity {
     	// Called when switching away
     	super.onStop();
     	view.stop();
-        //WonderSwan.savestate(mAutoSav.getAbsolutePath());
-    	if (checkFileAccess(mCartMem, true)) {
-    		WonderSwan.savebackup(mCartMem.getAbsolutePath());
+    }
+    
+    public void saveState(int stateNo) {
+    	String statePath = memPath + mRomHeader.internalname + "_" + Integer.toString(stateNo).replace("-", "a") + ".sav";
+    	File stateFile = new File(statePath);
+        try {
+        	stateFile.createNewFile();
+        } catch (IOException e) {
+            e.printStackTrace();
+            //throw new RuntimeException();
+        }
+        if (checkFileAccess(stateFile, true, false)) {
+        	WonderSwan.savestate(stateFile.getAbsolutePath());
+        }
+    }
+    
+    public void loadState(int stateNo) {
+    	String statePath = memPath + mRomHeader.internalname + "_" + Integer.toString(stateNo).replace("-", "a") + ".sav";
+    	File stateFile = new File(statePath);
+    	if (checkFileAccess(stateFile, false, false)) {
+    		if (stateNo != 0) {
+    			saveState(0);
+    		}
+    		WonderSwan.loadstate(stateFile.getAbsolutePath());
     	}
     }
     
-    public boolean checkFileAccess(File file, boolean write) {
+    public boolean checkFileAccess(File file, boolean write, boolean suppressToasts) {
     	boolean accessOK = false;
     	try {
     		if (file.isFile() && (!write || file.canWrite()) && (write || file.canRead())) {
@@ -268,7 +354,7 @@ public class Main extends BaseActivity {
     	} catch (Exception e) {
     		
     	}
-    	if (!accessOK) {
+    	if (!accessOK && !suppressToasts) {
     		if (write) {
     			Toast.makeText(this, R.string.writememfileerror, Toast.LENGTH_SHORT).show();
     		} else {
@@ -276,6 +362,17 @@ public class Main extends BaseActivity {
     		}
     	}
     	return accessOK;
+    }
+    
+    private String formatDate(long milliseconds) {
+    	// From https://stackoverflow.com/questions/36831597/android-convert-int-timestamp-to-human-datetime
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd' 'HH:mm:ss");
+        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(milliseconds);
+        TimeZone tz = TimeZone.getDefault();
+        sdf.setTimeZone(tz);
+        return sdf.format(calendar.getTime());
     }
 
 }
