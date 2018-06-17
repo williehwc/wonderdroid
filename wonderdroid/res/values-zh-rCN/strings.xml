@@ -75,10 +75,10 @@
     <string name="undo">复原</string>
     <string name="slot">状态</string>
     <string name="empty">空</string>
-    <string name="memreplaceprompt">注意：要载入的记忆状态的卡夹存档跟当前存档不同。要覆盖当前存档？</string>
+    <string name="memreplaceprompt">注意：要载入的记忆状态的卡带存档跟当前存档不同。要覆盖当前存档？</string>
     <string name="replace">是，覆盖</string>
     <string name="keep">否，留当前存档</string>
-    <string name="statewarning">储存和载入记忆状态是在测试的功能。我们建议您备份您的卡夹存档（在 ???）。</string>
+    <string name="statewarning">【一】储存和载入记忆状态是在测试的功能。我们建议您备份您的卡带存档（在 ???）。\n【二】载入记忆状态时，如果要载入的记忆状态的卡带存档跟当前存档不同，本模拟器会覆盖当前存档。</string>
     <string name="understand">我了解</string>
 
     <string-array name="sexes">

@@ -15,7 +15,10 @@ import java.util.TimeZone;
 
 import com.atelieryl.wonderdroid.utils.RomAdapter.Rom;
 import com.atelieryl.wonderdroid.views.EmuView;
+
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
@@ -53,9 +56,13 @@ public class Main extends BaseActivity {
     
     private String memPath = "wonderdroid/cartmem";
     
+    private String shortMemPath = "wonderdroid/cartmem";
+    
     private Menu menu;
     
-    private String packageName;
+    private String packageName = "com.atelieryl.wonderdroid"; // Will be checked and replaced automatically if different
+    
+    private boolean showStateWarning = true;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,11 +87,12 @@ public class Main extends BaseActivity {
         parseKeys(prefs);
         
         memPath = prefs.getString("emu_mempath", "wonderdroid/cartmem");
-        if (!memPath.startsWith("/")) {
-        	memPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + memPath;
-        }
         if (!memPath.endsWith("/")) {
         	memPath = memPath + "/";
+        }
+        shortMemPath = memPath;
+        if (!memPath.startsWith("/")) {
+        	memPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/" + memPath;
         }
 
         mPB = (ProgressBar)this.findViewById(R.id.romloadprogressbar);
@@ -142,6 +150,7 @@ public class Main extends BaseActivity {
         loader.execute((Void[])null);
         
         packageName = getPackageName();
+        showStateWarning = !prefs.getBoolean("hidestatewarning", false);
     }
 
     @Override
@@ -174,6 +183,21 @@ public class Main extends BaseActivity {
             case R.id.main_savestate:
             case R.id.main_loadstate:
             	updateStateMenuTitles();
+            	if (showStateWarning) {
+            		AlertDialog.Builder builder;
+                    builder = new AlertDialog.Builder(this);
+                    builder.setMessage(getResources().getString(R.string.statewarning).replace("???", shortMemPath))
+                    .setPositiveButton(R.string.understand, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) { 
+                        	showStateWarning = false;
+                        	SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(mContext);
+                        	SharedPreferences.Editor editor = prefs.edit();
+    	        	    	editor.putBoolean("hidestatewarning", true);
+    	        	    	editor.commit();
+                        }
+                     })
+                    .show();
+            	}
             	return true;
             case R.id.load_a1:
             	loadState(-1);
