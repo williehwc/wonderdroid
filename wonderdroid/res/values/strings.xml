@@ -3,8 +3,8 @@
 
     <string name="app_name">WonderDroid X</string>
     <string name="crash_string">WonderDroid X crashed!</string>
-    <string name="noroms">No ROMs found — Please exit, add ROMs to your ROM folder ??? on your SD card, and try again.</string>
-    <string name="nosdcard">SD Card isn\'t present or isn\'t ready.</string>
+    <string name="noroms">No ROMs found — Please exit, add ROMs to your ROM folder ???, and try again.</string>
+    <string name="nosdcard">Warning: main storage volume is unavailable.</string>
     <string name="colour">Color —\u00A0</string>
     <string name="mono">Monochrome —\u00A0</string>
     <string name="vertical">Vertical</string>
@@ -63,6 +63,17 @@
     <string name="reportdescription">If you are having performance issues, try changing the frame skip and sharpness first. If this does not help, or you are having another issue, please let us know. Thanks!</string>
     <string name="issues">GitHub Issues</string>
     <string name="moreapps">More YL apps</string>
+    <string name="cannotopenurl">Cannot find your browser</string>
+    <string name="cannotopenurldescription">But don\'t worry, we\'ve copied the URL to your clipboard. Simply paste it into your browser\'s address bar.</string>
+    <string name="sdcardinfo">Help on using SD cards</string>
+    <string name="rompatherror">ROM Path Error</string>
+    <string name="rompatherrordescription">The path ??? is unavailable. Please enter a different path in Preferences.</string>
+    <string name="mempatherror">Save Path Error</string>
+    <string name="mempatherrordescription">The path ??? is unavailable or read-only. Please enter a different path in Preferences.</string>
+    <string name="gotopreferences">Go to Preferences</string>
+    <string name="readmemfileerror">Cannot read save file</string>
+    <string name="writememfileerror">Cannot write save file</string>
+    <string name="helptranslate">\u00A0\u00A0\u00A0Help translate to Japanese »</string>
 
     <string-array name="sexes">
         <item>Male</item>
