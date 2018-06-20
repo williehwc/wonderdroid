@@ -37,13 +37,13 @@
     <string name="showcontrolsdescription">When starting a game</string>
     <string name="mapcontrols">Map controls</string>
     <string name="mapcontrolsdescription">For keyboards and other input peripherals</string>
-    <string name="arrangeonscreencontrols">Arrange onscreen controls</string>
+    <string name="onscreencontrolsappearance">Onscreen controls\' appearance</string>
+    <string name="onscreencontrolsappearancedescription">Requires emulator restart</string>
     <string name="vibratedown">Button-down vibration</string>
     <string name="vibratedowndescription">When pressing an onscreen control</string>
     <string name="vibrateup">Button-up vibration</string>
     <string name="vibrateupdescription">When releasing an onscreen control</string>
     <string name="relocate">Relocate Start to top-right</string>
-    <string name="relocatedescription">Requires emulator restart</string>
     <string name="swapab">Swap A + B buttons</string>
     <string name="graphicssettings">Graphics</string>
     <string name="frameskip">Frame skip</string>
@@ -74,6 +74,16 @@
     <string name="readmemfileerror">Cannot read save file</string>
     <string name="writememfileerror">Cannot write save file</string>
     <string name="helptranslate">\u00A0\u00A0\u00A0Help translate to Japanese »</string>
+    <string name="buttonsize">Button size</string>
+    <string name="tmargin">Top margin</string>
+    <string name="bmargin">Bottom margin</string>
+    <string name="lmargin">Left margin</string>
+    <string name="rmargin">Right margin</string>
+    <string name="transparency">Transparency</string>
+    <string name="moderatelytransparent">Moderately transparent</string>
+    <string name="highlytransparent">Highly transparent</string>
+    <string name="extremelytransparent">Extremely transparent</string>
+    <string name="entirelytransparent">Entirely transparent</string>
 
     <string-array name="sexes">
         <item>Male</item>

@@ -18,7 +18,8 @@
     <string name="reset">重置</string>
     <string name="settings_cat_controls">控制</string>
     <string name="mapcontrols">控制按鍵設置</string>
-    <string name="arrangeonscreencontrols">排列虛擬控制器</string>
+    <string name="onscreencontrolsappearance">虛擬控制器的外貌</string>
+    <string name="onscreencontrolsappearancedescription">需要重新開始模擬器</string>
     <string name="control_x2">X2 (右)</string>
     <string name="control_x3">X3 (下)</string>
     <string name="control_x4">X4 (左)</string>
@@ -43,7 +44,6 @@
     <string name="vibrateup">按鈕放開震動</string>
     <string name="vibrateupdescription"></string>
     <string name="relocate">Start 按鈕移到右上角</string>
-    <string name="relocatedescription">需要重新開始模擬器</string>
     <string name="swapab">交換 A + B 按鈕</string>
     <string name="graphicssettings">畫面</string>
     <string name="frameskip">跳幀</string>
@@ -71,6 +71,16 @@
 	<string name="gotopreferences">選項</string>
 	<string name="readmemfileerror">無法讀取存檔</string>
 	<string name="writememfileerror">無法存檔</string>
+	<string name="buttonsize">按鈕大小</string>
+    <string name="tmargin">上邊寬度</string>
+    <string name="bmargin">底邊寬度</string>
+    <string name="lmargin">左邊寬度</string>
+    <string name="rmargin">右邊寬度</string>
+    <string name="transparency">透明度</string>
+    <string name="moderatelytransparent">適度透明</string>
+    <string name="highlytransparent">高度透明</string>
+    <string name="extremelytransparent">非常透明</string>
+    <string name="entirelytransparent">完全透明</string>
 
     <string-array name="sexes">
         <item>男</item>

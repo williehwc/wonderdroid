@@ -27,12 +27,12 @@ public class Prefs extends PreferenceActivity {
                 return true;
             }
         });
-        findPreference("arrangeonscreencontrols").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+        findPreference("onscreencontrolsappearance").setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
             	goBack = true;
             	activity.setPreferenceScreen(null);
-            	activity.addPreferencesFromResource(R.layout.arrangeonscreencontrols);
+            	activity.addPreferencesFromResource(R.layout.onscreencontrolsappearance);
                 return true;
             }
         });

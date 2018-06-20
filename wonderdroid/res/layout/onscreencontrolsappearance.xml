@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+    
+    <PreferenceCategory android:title="@string/onscreencontrolsappearance">
+        
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="relocate"
+            android:title="@string/relocate" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:key="swapab"
+            android:title="@string/swapab" />
+        <ListPreference
+            android:entries="@array/size"
+            android:entryValues="@array/sizevalues"
+            android:key="buttonsize"
+            android:title="@string/buttonsize" />
+        <ListPreference
+            android:entries="@array/size"
+            android:entryValues="@array/sizevalues"
+            android:key="tmargin"
+            android:title="@string/tmargin" />
+        <ListPreference
+            android:entries="@array/size"
+            android:entryValues="@array/sizevalues"
+            android:key="bmargin"
+            android:title="@string/bmargin" />
+        <ListPreference
+            android:entries="@array/size"
+            android:entryValues="@array/sizevalues"
+            android:key="lmargin"
+            android:title="@string/lmargin" />
+        <ListPreference
+            android:entries="@array/size"
+            android:entryValues="@array/sizevalues"
+            android:key="rmargin"
+            android:title="@string/rmargin" />
+        <ListPreference
+            android:entries="@array/transparency"
+            android:entryValues="@array/bloodtypevalues"
+            android:key="transparency"
+            android:title="@string/transparency" />
+        
+    </PreferenceCategory>
+    
+</PreferenceScreen>

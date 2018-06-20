@@ -47,5 +47,25 @@
         <item>10</item>
         <item>15</item>
     </string-array>
+    <string-array name="size">
+        <item>XS / SS</item>
+        <item>S</item>
+        <item>M</item>
+        <item>L</item>
+        <item>XL / LL</item>
+    </string-array>
+    <string-array name="sizevalues">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="transparency">
+        <item>@string/moderatelytransparent</item>
+        <item>@string/highlytransparent</item>
+        <item>@string/extremelytransparent</item>
+        <item>@string/entirelytransparent</item>
+    </string-array>
 
 </resources>

@@ -7,8 +7,9 @@
             android:title="@string/mapcontrols"
             android:summary="@string/mapcontrolsdescription" />
         <Preference
-            android:key="arrangeonscreencontrols"
-            android:title="@string/arrangeonscreencontrols" />
+            android:key="onscreencontrolsappearance"
+            android:title="@string/onscreencontrolsappearance"
+            android:summary="@string/onscreencontrolsappearancedescription" />
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="showcontrols"
