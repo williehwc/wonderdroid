@@ -318,8 +318,8 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadstate(JNIEn
 	if (file != NULL) {
 		LOGD("Loading state");
 		stateLock = true;
-		uint8_t toLoad[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11];
-		fread(toLoad, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11, file);
+		uint8_t toLoad[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11 + 326 + 123];
+		fread(toLoad, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11 + 326 + 123, file);
 		memcpy(wsRAM, toLoad, 65536);
 		for (int i = 0; i < 14; i++) {
 			unsigned *reg = malloc(sizeof(unsigned));
@@ -327,7 +327,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadstate(JNIEn
 			v30mz_set_reg(i + 1, *reg);
 		}
 		memcpy(wsSRAM, toLoad + 65536 + sizeof(unsigned) * 14, sram_size);
-		memcpy(&wsLine, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size, sizeof(uint8_t));
+		memcpy(&wsLine, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size, sizeof(uint8_t)); // DIFF 18038
 		memcpy(wsMonoPal, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1, 256);
 		memcpy(wsColors, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256, 32);
 		memcpy(wsCols, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 256 + 32, 1024);
@@ -348,7 +348,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadstate(JNIEn
 		memcpy(&SpriteCountCache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1853, 4);
 		memcpy(&DispControl, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1857, 1);
 		memcpy(&BGColor, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1858, 1);
-		memcpy(&LineCompare, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1859, 1);
+		memcpy(&LineCompare, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1859, 1); // DIFF 1877B
 		memcpy(&SPRBase, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1860, 1);
 		memcpy(&SpriteStart, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1861, 1);
 		memcpy(&SpriteCount, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1862, 1);
@@ -361,9 +361,9 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadstate(JNIEn
 		memcpy(&SPRy0, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1869, 1);
 		memcpy(&SPRx1, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1870, 1);
 		memcpy(&SPRy1, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1871, 1);
-		memcpy(&BGXScroll, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1872, 1);
+		memcpy(&BGXScroll, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1872, 1); // DIFF 18788
 		memcpy(&BGYScroll, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1873, 1);
-		memcpy(&FGXScroll, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1874, 1);
+		memcpy(&FGXScroll, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1874, 1); // DIFF 1878A
 		memcpy(&FGYScroll, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1875, 1);
 		memcpy(&LCDControl, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1876, 1);
 		memcpy(&LCDIcons, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1877, 1);
@@ -389,6 +389,33 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_loadstate(JNIEn
 		memcpy(&IOn_Cache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + 1190795, sizeof(bool));
 		memcpy(&IOn_Which, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190795, 4);
 		memcpy(&IVector_Cache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190799, 4);
+		memcpy(&v30mz_ICount, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190803, 4);
+		memcpy(&v30mz_timestamp, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190807, 4);
+		memcpy(&I, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190811, 56);
+		memcpy(&InHLT, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190867, 1);
+		memcpy(&prefix_base, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190868, 4);
+		memcpy(&seg_prefix, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190872, 1);
+		memcpy(parity_table, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190873, 256);
+		memcpy(period, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191129, 8);
+		memcpy(volume, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191137, 4);
+		memcpy(&voice_volume, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191141, 1);
+		memcpy(&sweep_step, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191142, 1);
+		memcpy(&sweep_value, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191143, 1);
+		memcpy(&noise_control, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191144, 1);
+		memcpy(&control, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191145, 1);
+		memcpy(&output_control, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191146, 1);
+		memcpy(&sweep_8192_divider, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191147, 4);
+		memcpy(&sweep_counter, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191151, 1);
+		memcpy(&SampleRAMPos, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191152, 1);
+		memcpy(sample_cache, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191153, 32);
+		memcpy(&last_v_val, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191185, 4);
+		memcpy(&HyperVoice, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191189, 1);
+		memcpy(&last_hv_val, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191190, 4);
+		memcpy(period_counter, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191194, 16);
+		memcpy(last_val, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191210, 32);
+		memcpy(sample_pos, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191242, 4);
+		memcpy(&nreg, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191246, 2);
+		memcpy(&last_ts, toLoad + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191248, 4);
 		wsSetVideo(wsVMode, TRUE);
 		/*wsLine = 145;
 		WSwan_Interrupt(WSINT_VBLANK);
@@ -416,7 +443,7 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_savestate(JNIEn
 	if (file != NULL) {
 		LOGD("Writing state");
 		stateLock = true;
-		uint8_t toWrite[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11];
+		uint8_t toWrite[65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11 + 326 + 123];
 		memcpy(toWrite, wsRAM, 65536);
 		for (int i = 0; i < 14; i++) {
 			unsigned reg = v30mz_get_reg(i + 1);
@@ -485,9 +512,37 @@ JNIEXPORT void JNICALL Java_com_atelieryl_wonderdroid_WonderSwan_savestate(JNIEn
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + 1190795, &IOn_Cache, sizeof(bool));
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190795, &IOn_Which, 4);
 		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190799, &IVector_Cache, 4);
-		fwrite(toWrite, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11, file);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190803, &v30mz_ICount, 4);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190807, &v30mz_timestamp, 4);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190811, &I, 56);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190867, &InHLT, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190868, &prefix_base, 4);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190872, &seg_prefix, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1190873, parity_table, 256);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191129, period, 8);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191137, volume, 4);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191141, &voice_volume, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191142, &sweep_step, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191143, &sweep_value, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191144, &noise_control, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191145, &control, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191146, &output_control, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191147, &sweep_8192_divider, 4);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191151, &sweep_counter, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191152, &SampleRAMPos, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191153, sample_cache, 32);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191185, &last_v_val, 4);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191189, &HyperVoice, 1);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191190, &last_hv_val, 4);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191194, period_counter, 16);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191210, last_val, 32);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191242, sample_pos, 4);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191246, &nreg, 2);
+		memcpy(toWrite + 65536 + sizeof(unsigned) * 14 + sram_size + sizeof(bool) + 1191248, &last_ts, 4);
+		fwrite(toWrite, sizeof(uint8_t), 65536 + sizeof(unsigned) * 14 + sram_size + 1 + 1312 + 28 + 547 + 8224 + 132104 + 1048576 + sizeof(bool) + 11 + 326 + 123, file);
 		stateLock = false;
 		fclose(file);
+		LOGD("Save state version 3");
 	}
 
 }

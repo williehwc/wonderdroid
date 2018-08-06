@@ -63,6 +63,10 @@ public class Main extends BaseActivity {
     private String packageName = "com.atelieryl.wonderdroid"; // Will be checked and replaced automatically if different
     
     private boolean showStateWarning = true;
+    
+    private int currentBackupNo = 0;
+    
+    private final int maxBackupNo = 4;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -250,7 +254,7 @@ public class Main extends BaseActivity {
     
     public void updateStateMenuTitles() {
     	for (int i = -1; i <= 5; i++) {
-    		String statePath = memPath + mRomHeader.internalname + "_" + Integer.toString(i).replace("-", "a") + ".sav";
+    		String statePath = memPath + mRomHeader.internalname + "_" + Integer.toString(i).replace("-", "a") + "_0.sav";
     		String menuTitle = getResources().getString(R.string.slot) + " " + Integer.toString(i).replace("-", "a");
         	if (i < 0) {
         		menuTitle = getResources().getString(R.string.auto);
@@ -345,28 +349,47 @@ public class Main extends BaseActivity {
     }
     
     public void saveState(int stateNo) {
-    	String statePath = memPath + mRomHeader.internalname + "_" + Integer.toString(stateNo).replace("-", "a") + ".sav";
-    	File stateFile = new File(statePath);
-        try {
-        	stateFile.createNewFile();
-        } catch (IOException e) {
-            e.printStackTrace();
-            //throw new RuntimeException();
-        }
-        if (checkFileAccess(stateFile, true, false)) {
-        	WonderSwan.savestate(stateFile.getAbsolutePath());
-        }
+    	for (int backupNo = 0; backupNo <= maxBackupNo; backupNo++) {
+    		String statePath = memPath + mRomHeader.internalname + "_" + Integer.toString(stateNo).replace("-", "a") + "_" + Integer.toString(backupNo) + ".sav";
+        	File stateFile = new File(statePath);
+            try {
+            	stateFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+                //throw new RuntimeException();
+            }
+            if (checkFileAccess(stateFile, true, false)) {
+            	for (int i = 0; i < 2; i++) {
+            		WonderSwan.savestate(stateFile.getAbsolutePath());
+            	}
+            } else {
+            	break;
+            }
+    	}
     }
     
     public void loadState(int stateNo) {
-    	String statePath = memPath + mRomHeader.internalname + "_" + Integer.toString(stateNo).replace("-", "a") + ".sav";
-    	File stateFile = new File(statePath);
-    	if (checkFileAccess(stateFile, false, false)) {
-    		if (stateNo != 0) {
-    			saveState(0);
-    		}
-    		WonderSwan.loadstate(stateFile.getAbsolutePath());
+    	String statePath;
+    	File stateFile;
+    	int startingBackupNo = currentBackupNo;
+    	while (true) {
+    		statePath = memPath + mRomHeader.internalname + "_" + Integer.toString(stateNo).replace("-", "a") + "_" + Integer.toString(currentBackupNo) + ".sav";
+        	currentBackupNo++;
+        	if (currentBackupNo > maxBackupNo) {
+        		currentBackupNo = 0;
+        	}
+        	stateFile = new File(statePath);
+        	if (checkFileAccess(stateFile, false, true)) {
+        		break;
+        	} else if (startingBackupNo == currentBackupNo) {
+        		Toast.makeText(this, R.string.readmemfileerror, Toast.LENGTH_SHORT).show();
+        		return;
+        	}
     	}
+		if (stateNo != 0) {
+			saveState(0);
+		}
+		WonderSwan.loadstate(stateFile.getAbsolutePath());
     }
     
     public boolean checkFileAccess(File file, boolean write, boolean suppressToasts) {
